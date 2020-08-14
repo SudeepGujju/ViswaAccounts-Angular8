@@ -1,0 +1,51 @@
+<form [formGroup]="groupDtlsForm" (ngSubmit)="save()">
+    <div class="flex-title" mat-dialog-title>
+        <div>{{pageMode | uppercase}} - Group</div>
+        <div mat-dialog-close>
+            <button type="button" mat-icon-button isIconButton="true" aria-label="close dialog" tabindex="-1">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <div mat-dialog-content>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field class="space-full" [class.cus-readonly]="(this.pageMode != 'create')">
+                <mat-label>Code</mat-label>
+                <input type="text" matInput formControlName="code" maxlength="10" required uppercase [readonly]="(this.pageMode != 'create')">
+                <mat-spinner *ngIf="code.pending" mode="indeterminate" diameter="20" matSuffix></mat-spinner>
+                <mat-hint align="end">
+                    {{code.value.length}}/10
+                </mat-hint>
+                <mat-error *ngIf="code.hasError('required') || code.hasError('alreadyExists')">
+                    {{code.hasError('alreadyExists') ? 'Code already exists' : 'Enter code'}}
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field class="space-full">
+                <mat-label>Name</mat-label>
+                <input type="text" matInput formControlName="name" maxlength="50" required uppercase>
+                <mat-hint align="end">
+                    {{name.value.length}}/50
+                </mat-hint>
+                <mat-error *ngIf="name.hasError('required')">
+                    Enter name
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field class="space-full">
+                <mat-label>Type</mat-label>
+                <mat-select formControlName="grpType" required>
+                    <mat-option [value]="groupType.Trading">Trading</mat-option>
+                    <mat-option [value]="groupType.ProfitAndLoss">Profit And Loss</mat-option>
+                    <mat-option [value]="groupType.BalanceSheet">Balance Sheet</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!groupDtlsForm.valid || inProgress">Save</button>
+        <button type="button" mat-raised-button mat-dialog-close color="primary">Close</button>
+    </div>
+</form>

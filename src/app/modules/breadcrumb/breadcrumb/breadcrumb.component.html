@@ -1,0 +1,16 @@
+<!-- <div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <a class="breadcrumb__step breadcrumb__step--active" href="#">ECMAScript</a>
+        <a class="breadcrumb__step" href="#">HTML5</a>
+        <a class="breadcrumb__step" href="#">Node.js</a>
+        <a class="breadcrumb__step" href="#">Angular</a>
+    </div>
+</div> -->
+<div class="breadcrumb-container">
+    <div class="breadcrumb">
+        <a class="breadcrumb__step" [ngClass]="{'breadcrumb__step--active': (idx < activeIdx)}" *ngFor="let step of steps; index as idx">
+            {{step.name}}
+            <mat-icon style="vertical-align: middle;">{{step.iconName}}</mat-icon>
+        </a>
+    </div>
+</div>

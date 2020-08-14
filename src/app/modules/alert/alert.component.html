@@ -1,0 +1,6 @@
+<h2 mat-dialog-title [innerText]="title"></h2>
+<div mat-dialog-content [innerText]="message"></div>
+<div mat-dialog-actions align="end">
+    <button mat-button type="button" [matDialogClose]="false" color="warn" *ngIf="dlgType == DialogType.Confirm">{{cancelBtnLabel}}</button>
+    <button mat-button type="button" [matDialogClose]="true" color="primary" cdkFocusInitial>{{okBtnLabel}}</button>
+</div>

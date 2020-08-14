@@ -1,0 +1,116 @@
+<form [formGroup]="bankForm">
+    <div class="flex-space align-left" matAutocompleteOrigin #codeOrigin="matAutocompleteOrigin">
+        <div class="mat-title mr-05">
+            Bank List
+        </div>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>From Date</mat-label>
+            <input type="text" matInput formControlName="fromDate" maxlength="14" required placeholder="DD/MM/YYYY" mask="00/00/0000" [validation]="false">
+            <mat-error *ngIf="fromDate.hasError('required')">
+                Enter date
+            </mat-error>
+            <mat-error *ngIf="fromDate.hasError('errorDateValue')">
+                Enter valid date
+            </mat-error>
+            <mat-error *ngIf="fromDate.hasError('errorDateRange')">
+                Enter date in range
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>To Date</mat-label>
+            <input type="text" matInput formControlName="toDate" maxlength="14" required placeholder="DD/MM/YYYY" mask="00/00/0000" [validation]="false" [errorStateMatcher]="dateErrorStateMatcher">
+            <mat-error *ngIf="toDate.hasError('required')">
+                Enter date
+            </mat-error>
+            <mat-error *ngIf="toDate.hasError('errorDateValue')">
+                Enter valid date
+            </mat-error>
+            <mat-error *ngIf="toDate.hasError('errorDateRange')">
+                Enter date in range
+            </mat-error>
+            <mat-error *ngIf="bankForm.hasError('errorFromToDate')">
+                To date cannot exceed From date
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>Code</mat-label>
+            <input type="text" matInput formControlName="code" maxlength="10" [matAutocomplete]="autoCode" uppercase [matAutocompleteConnectedTo]="codeOrigin" (blur)="validateNSetCode($event.target.value, code, firmName)">
+            <mat-error *ngIf="code.hasError('InvalidCode')">
+                Enter valid code
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>Firm Name</mat-label>
+            <input type="text" matInput maxlength="50" tabindex="-1" #firmName readonly>
+        </mat-form-field>
+        <button type="button" mat-raised-button color="primary" (click)="search()" [disabled]="!bankForm.valid || inProgress">Search</button>
+        &nbsp;
+        <button mat-raised-button color="primary" (click)="exportData()" [disabled]="(bankListDS.filteredData.length === 0)">Export</button>
+        <mat-autocomplete #autoCode="matAutocomplete" [autoActiveFirstOption]="true"
+            (optionActivated)="validateNSetCode($event.option.value, code, firmName)" (optionSelected)="validateNSetCode($event.option.value, code, firmName)">
+            <mat-option *ngFor="let option of filteredOption | async;" [value]="option.code">
+                {{option.firmName + (option.town.length > 0 ? ' - ' + option.town : '') }}</mat-option>
+        </mat-autocomplete>
+    </div>
+</form>
+<div class="container mat-elevation-z8">
+    <table mat-table [dataSource]="bankListDS" [trackBy]="trackList" matSort>
+        <ng-container matColumnDef="SL">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>SL</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.SL}}</td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Date</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.date}}</td>
+        </ng-container>
+        <ng-container matColumnDef="fromCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>From Code</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.fromCode}}</td>
+        </ng-container>
+        <ng-container matColumnDef="toCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>To Code</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.toCode}}</td>
+        </ng-container>
+        <ng-container matColumnDef="chNo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Check No</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.chNo}}</td>
+        </ng-container>
+        <ng-container matColumnDef="desc">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Desc</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.desc}}</td>
+        </ng-container>
+        <ng-container matColumnDef="receipt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Receipt</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.receipt | number:'.2-2'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="payment">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Payment</strong>
+            </th>
+            <td mat-cell *matCellDef="let bank">{{bank.payment | number:'.2-2'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+            <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length" data-export="false">
+                No Data Available
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;"></tr>
+        <tr mat-footer-row *matFooterRowDef="['noData']" data-export="false" [hidden]="!(bankListDS.filteredData.length === 0)" style="text-align: center;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20, 25]" pageSize="10" showFirstLastButtons></mat-paginator>
+</div>

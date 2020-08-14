@@ -1,0 +1,27 @@
+<input type="file" #fileElement style="display: none;" accept=".csv" (change)="onFileSelect()">
+<div class="flex-title" mat-dialog-title>
+    <div>{{uploadConfig.title}} - Upload</div>
+    <div mat-dialog-close>
+        <button type="button" mat-icon-button isIconButton="true" aria-label="close dialog" tabindex="-1"><mat-icon>close</mat-icon></button>
+    </div>
+</div>
+<div mat-dialog-content>
+    <div class="flex-space">
+        <div *ngIf="file; else noFile"><span class="mat-title">FileName: </span>{{file.name}}</div>
+        <ng-template #noFile>No File Selected</ng-template>
+        <button mat-raised-button color="primary" (click)="addFiles()">
+            Add Files
+        </button>
+    </div>
+    <div *ngIf="resp">
+        <mat-divider></mat-divider>
+        <div style="padding: 5px 0px;">Total: {{ resp.totalCount }}. Success: {{ resp.successCount }}. Failed: {{resp.failedCount}}.</div>
+        <mat-list class="no-padding-list" style="max-height: 250px;overflow-y: auto;" role="list">
+            <mat-list-item style="padding: 0;" *ngFor="let record of resp.failedRecs" role="list-item">{{record.id}} - {{record.errMsg}}</mat-list-item>
+        </mat-list>
+    </div>
+</div>
+<div mat-dialog-actions class="align-right">
+    <button type="button" mat-raised-button color="primary" [disabled]="!file || inProgress" (click)="uploadFile()">Upload</button>
+    <button type="button" mat-raised-button mat-dialog-close color="primary">Close</button>
+</div>

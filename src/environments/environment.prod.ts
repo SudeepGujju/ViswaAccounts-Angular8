@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  hideLoader: 'HIDE_LOADER'
 };

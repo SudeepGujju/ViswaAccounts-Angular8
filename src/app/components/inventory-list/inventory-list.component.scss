@@ -1,0 +1,31 @@
+.mat-icon-button {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.mat-column-invntryName{
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 110px !important;
+    width: 110px !important;
+    overflow-wrap: break-word;  
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-date{
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 100px !important;
+    width: 100px !important;
+    overflow-wrap: break-word;  
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}

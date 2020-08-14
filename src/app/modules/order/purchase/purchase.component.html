@@ -1,0 +1,197 @@
+<div class="flex align-left stage-head">
+    <div class="mr-05" style="font-weight: bold;font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size:1.5rem;">
+        Purchase
+    </div>
+    <app-breadcrumb [config]="breadcrumbConfig" [activeItemIdx]="currentStage"></app-breadcrumb>
+</div>
+<form [formGroup]="purchaseForm">
+    <div *ngIf="currentStage==1" class="stage-body">
+        <mat-form-field style="width: 100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <mat-label>Select Shop</mat-label>
+            <input type="text" matInput formControlName="stockistName" maxlength="30" required [matAutocomplete]="autoUser" (blur)="validateNStockistID($event.target.value)">
+            <mat-error *ngIf="stockistName.hasError('required')">
+                Select shop
+            </mat-error>
+            <mat-error *ngIf="stockistName.hasError('InvalidShop')">
+                Select valid shop
+            </mat-error>
+        </mat-form-field>
+        <mat-autocomplete #autoUser="matAutocomplete" [autoActiveFirstOption]="true" (optionActivated)="validateNStockistID($event.option.value)" (optionSelected)="validateNStockistID($event.option.value)">
+            <mat-option *ngFor="let user of filteredOption | async" [value]="user.username">{{user.username}}</mat-option>
+        </mat-autocomplete>
+    </div>
+    <div *ngIf="currentStage==2" class="stage-body">
+        <div style="max-height: 15%;">
+            <mat-form-field style="width: 80%;margin-right: 2rem;">
+                <mat-label>Product Name</mat-label>
+                <input type="text" matInput [formControl]="productName" maxlength="" [matAutocomplete]="autoProduct" >
+                <mat-spinner *ngIf="isLoadingProducts" mode="indeterminate" diameter="25" matSuffix></mat-spinner>
+                <mat-error *ngIf="productName.hasError('InvalidProduct')">
+                    Select valid product
+                </mat-error>
+                <mat-error *ngIf="productName.hasError('ProductAlreadyExist')">
+                    Product already added
+                </mat-error>
+            </mat-form-field>
+            <mat-autocomplete #autoProduct="matAutocomplete" [autoActiveFirstOption]="true" [displayWith]="displayFn">
+                <mat-option *ngFor="let product of filteredProducts | async" [value]="product">{{product.name + " - " + product.company}}</mat-option>
+            </mat-autocomplete>
+            <button type="button" mat-raised-button color="primary" (click)="addProduct()">Add</button>
+        </div>
+        <div class="mat-elevation-z8" style="max-height: 85%;overflow: auto;">
+            <table mat-table [dataSource]="tableDataSource" formArrayName="products">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef style="width:50%">
+                        <strong>ITEM</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index" [formGroupName]="index">
+                        {{item.get('name').value}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef style="width:30%">
+                        <strong>QTY</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index" [formGroupName]="index">
+                        <quantity-counter controlName="quantity" initialValue="1" allowEmpty="false"></quantity-counter>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="mrp">
+                    <th mat-header-cell *matHeaderCellDef style="width:20%">
+                        <strong>MRP</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index" [formGroupName]="index">
+                        {{item.get('mrp').value}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="opts">
+                    <th mat-header-cell *matHeaderCellDef style="width:20%">
+                        <strong>OPERATION</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index" [formGroupName]="index">
+                        <button type="button" mat-icon-button (click)="deleteProduct(index)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="noData">
+                    <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
+                        No Data Available
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" ></tr>
+                <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="products.length > 0" style="text-align: center;"></tr>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="currentStage==3" class="stage-body">
+        <div style="max-height: 10%;">&nbsp;</div>
+        <div class="mat-elevation-z8" style="max-height: 90%;overflow: auto;">
+            <table mat-table [dataSource]="tableDataSource" formArrayName="products">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef style="width:50%">
+                        <strong>ITEM</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index">
+                        {{item.get('name').value}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef style="width:25%">
+                        <strong>QTY</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index">
+                        {{item.get('quantity').value}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="mrp" style="width:25%">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <strong>MRP</strong>
+                    </th>
+                    <td mat-cell *matCellDef="let item; let index = index" [formGroupName]="index">
+                        {{item.get('mrp').value}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="summary">
+                    <td mat-footer-cell *matFooterCellDef [attr.colspan]="3" style="text-align: center;">
+                        <span>
+                            Total Items: {{tableDataSource.value.length}}
+                        </span>
+                        <span>
+                            Total Price: 0
+                        </span>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="['name','quantity','mrp']; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['name','quantity','mrp']" ></tr>
+                <tr mat-footer-row *matFooterRowDef="['summary']"></tr>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="currentStage==4" class="stage-body">
+        <div style="max-height: 10%;">&nbsp;</div>
+        <div style="max-height: 90%;overflow: auto;">
+            <mat-card class="">
+                <mat-card-header>
+                    <mat-card-title style="margin-bottom:0;">Your order has been placed</mat-card-title>
+                </mat-card-header>
+            </mat-card>
+            <br>
+            <mat-card class="">
+                <mat-card-header>
+                    <mat-card-title>Order Status</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-divider [inset]="true"></mat-divider>
+                    <p style="margin: 16px 16px 0 16px;">
+                        Order has been placed. Yet to be confirmed by the shop dealer.
+                    </p>
+                </mat-card-content>
+            </mat-card>
+            <br>
+            <mat-card class="">
+                <mat-card-header>
+                    <mat-card-title>Order Details</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <mat-divider [inset]="true"></mat-divider>
+                    <table style="margin: 16px 16px 0 16px;">
+                        <tbody>
+                            <tr>
+                                <td>#</td>
+                                <td>587888888885</td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>08/08/2020</td>
+                            </tr>
+                            <tr>
+                                <td>No. Of Items</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+                                <td>Total Price</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card-content>
+            </mat-card>
+            <br>
+        </div>
+    </div>
+</form>
+<div class="stage-foot">
+    <div *ngIf="currentStage == 1" style="text-align: right;">
+        <button type="button" mat-raised-button color="primary" [disabled]="!stockistName.valid" (click)="nextStage()">Next <mat-icon>arrow_forward_ios</mat-icon></button>
+    </div>
+    <div *ngIf="currentStage == 2" class="flex">
+        <button type="button" mat-raised-button color="primary" (click)="previousStage()"><mat-icon>arrow_back_ios</mat-icon>Back</button>
+        <button type="button" mat-raised-button color="primary" [disabled]="products.length == 0 || !products.valid" (click)="nextStage()">Next <mat-icon>arrow_forward_ios</mat-icon></button>
+    </div>
+    <div *ngIf="currentStage == 3" class="flex">
+        <button type="button" mat-raised-button color="primary" (click)="previousStage()"><mat-icon>arrow_back_ios</mat-icon> Back</button>
+        <button type="button" mat-raised-button color="primary" (click)="nextStage()">Place Order <mat-icon>grading</mat-icon></button>
+    </div>
+</div>

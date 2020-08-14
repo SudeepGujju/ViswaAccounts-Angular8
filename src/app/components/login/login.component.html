@@ -1,0 +1,27 @@
+<div class="container">
+    <mat-card class="mat-elevation-z8">
+        <mat-card-title>Login</mat-card-title>
+        <mat-card-content>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div *ngIf="errMsg" class="error">
+                    {{this.errMsg}}
+                </div>
+                <mat-form-field>
+                    <mat-label>Login ID</mat-label>
+                    <input type="text" matInput formControlName="loginID" required maxlength="15">
+                    <mat-error *ngIf="loginID.hasError('required')">
+                        Enter login ID
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Password</mat-label>
+                    <input type="password" matInput formControlName="password" required maxlength="15">
+                    <mat-error *ngIf="password.hasError('required')">
+                        Enter password
+                    </mat-error>
+                </mat-form-field>
+                <button type="submit" mat-raised-button color="primary" [disabled]="inProgress">Login</button>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

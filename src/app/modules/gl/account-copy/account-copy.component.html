@@ -1,0 +1,84 @@
+<form [formGroup]="accountCopyForm">
+    <div class="flex-space align-left" matAutocompleteOrigin #codeOrigin="matAutocompleteOrigin">
+        <div class="mat-title mr-05">
+            Account Copy
+        </div>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>Code</mat-label>
+            <input type="text" matInput formControlName="code" maxlength="10" [matAutocomplete]="autoCode" uppercase [matAutocompleteConnectedTo]="codeOrigin" (blur)="validateNSetCode($event.target.value, code, firmName)" required>
+            <mat-error *ngIf="code.hasError('required')">
+                Enter code
+            </mat-error>
+            <mat-error *ngIf="code.hasError('InvalidCode')">
+                Enter valid code
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>Firm Name</mat-label>
+            <input type="text" matInput maxlength="50" tabindex="-1" #firmName readonly  [disabled]="accountCopyForm.disabled">
+        </mat-form-field>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>From Date</mat-label>
+            <input type="text" matInput formControlName="fromDate" maxlength="14" required placeholder="DD/MM/YYYY" mask="00/00/0000" [validation]="false">
+            <mat-error *ngIf="fromDate.hasError('required')">
+                Enter date
+            </mat-error>
+            <mat-error *ngIf="fromDate.hasError('errorDateValue')">
+                Enter valid date
+            </mat-error>
+            <mat-error *ngIf="fromDate.hasError('errorDateRange')">
+                Enter date in range
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="space-2 mr-05">
+            <mat-label>To Date</mat-label>
+            <input type="text" matInput formControlName="toDate" maxlength="14" required placeholder="DD/MM/YYYY" mask="00/00/0000" [validation]="false" [errorStateMatcher]="dateErrorStateMatcher">
+            <mat-error *ngIf="toDate.hasError('required')">
+                Enter date
+            </mat-error>
+            <mat-error *ngIf="toDate.hasError('errorDateValue')">
+                Enter valid date
+            </mat-error>
+            <mat-error *ngIf="toDate.hasError('errorDateRange')">
+                Enter date in range
+            </mat-error>
+            <mat-error *ngIf="accountCopyForm.hasError('errorFromToDate')">
+                To date cannot exceed From date
+            </mat-error>
+        </mat-form-field>
+        <button type="button" mat-raised-button color="primary" (click)="search()" [disabled]="!accountCopyForm.valid || inProgress">Search</button>
+        &nbsp;
+        <!-- <button mat-raised-button color="primary" (click)="exportData()" [disabled]="(bankListDS.filteredData.length === 0)">Export</button> -->
+        <mat-autocomplete #autoCode="matAutocomplete" [autoActiveFirstOption]="true"
+            (optionActivated)="validateNSetCode($event.option.value, code, firmName)" (optionSelected)="validateNSetCode($event.option.value, code, firmName)">
+            <mat-option *ngFor="let option of filteredOption | async;" [value]="option.code">
+                {{option.firmName + (option.town.length > 0 ? ' - ' + option.town : '') }}</mat-option>
+        </mat-autocomplete>
+    </div>
+</form>
+<div *ngIf="recordsList" style="max-height: 400px; overflow-y: auto;">
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <!-- <th>Code</th> -->
+                <th>No</th>
+                <th>Description</th>
+                <th>Credit</th>
+                <th>Debit</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let record of recordsList">
+                <td>{{record.date}}</td>
+                <!-- <td>{{record.code}}</td> -->
+                <td>{{record.no}}</td>
+                <td>{{record.desc}}</td>
+                <td style="text-align: right;">{{record.credit | number:'.2-2'}}</td>
+                <td style="text-align: right;">{{record.debit | number:'.2-2'}}</td>
+                <td style="text-align: right;">{{record.balance}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

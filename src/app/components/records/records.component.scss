@@ -1,0 +1,62 @@
+.mat-header-cell{
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    text-align: center;
+}
+
+.mat-column-GSTIN, .mat-column-SUPPLIER{
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 140px !important;
+    width: 140px !important;
+    overflow-wrap: break-word;  
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+.mat-column-INVNO{
+
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 110px !important;
+    width: 110px !important;
+    overflow-wrap: break-word;  
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+}
+
+// .mat-column-INVNO{
+
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 110px !important;
+//     width: 110px !important;
+//     overflow-wrap: break-word;
+//     word-break: break-word;
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+// }
+
+// .mat-column-TAXABUL, .mat-column-IGST, .mat-column-CSS{
+
+//     word-wrap: break-word !important;
+//     white-space: unset !important;
+//     flex: 0 0 110px !important;
+//     justify-content: center;
+//     width: 110px !important;
+//     overflow-wrap: break-word;
+//     word-break: break-word;
+//     -ms-hyphens: auto;
+//     -moz-hyphens: auto;
+//     -webkit-hyphens: auto;
+//     hyphens: auto;
+// }

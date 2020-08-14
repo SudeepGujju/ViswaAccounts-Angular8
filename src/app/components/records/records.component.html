@@ -1,0 +1,42 @@
+<div class="flex-space align-left">
+    <div class="space-2 mat-title">
+        {{reportType}} Report
+    </div>
+    <mat-form-field class="space-2 mr-05">
+        <mat-label>File</mat-label>
+        <mat-select #fileControl >
+            <mat-option *ngFor="let file of filesList" [value]="file">
+                {{file}}
+            </mat-option>
+        </mat-select>    
+    </mat-form-field>
+    <div class="space-1 mr-1">
+        <button type="button" mat-raised-button color="primary" (click)="loadFile(fileControl.value);">Load File</button>
+    </div>
+    <mat-form-field *ngIf="displayTable" class="space-2 mr-05">
+        <mat-label>Filter Records</mat-label>
+        <input matInput type="text" (keyup)="applyFilter($event.target.value)">
+    </mat-form-field>
+    <div *ngIf="displayTable">
+        <button type="button" mat-raised-button color="primary" (click)="exportData()">Export</button>
+    </div>
+</div>
+<div class="container mat-elevation-z8" *ngIf="displayTable">
+    <table mat-table [dataSource]="tableDS" matSort>
+        <ng-container *ngFor="let column of columns" [matColumnDef]="column.columnDef">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{column.header}}
+            </th>
+            <td mat-cell *matCellDef="let record" [style.text-align]="column.align">{{column.cell(record)}}</td>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+            <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length">
+                No Data Available
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" ></tr>
+        <tr mat-footer-row *matFooterRowDef="['noData']" [hidden]="!(tableDS.filteredData.length === 0)" style="text-align: center;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20]" pageSize="10" showFirstLastButtons></mat-paginator>
+</div>

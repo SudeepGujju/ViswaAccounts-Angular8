@@ -1,0 +1,32 @@
+<input type="file" #file style="display: none;" (change)="onFileSelect()" multiple>
+<div class="flex-title" mat-dialog-title>
+    <div>FILE - Upload</div>
+    <div mat-dialog-close *ngIf="uploadStatus !== 1">
+        <button type="button" mat-icon-button isIconButton="true" aria-label="close dialog" tabindex="-1"><mat-icon>close</mat-icon></button>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<br>
+<div mat-dialog-content>
+    <div>
+        <button [disabled]="uploadStatus > 0" mat-raised-button color="primary" (click)="addFiles()">
+            Add Files
+        </button>
+    </div>
+    <mat-list>
+        <mat-list-item *ngFor="let file of files">
+            <mat-icon matListIcon>note</mat-icon>
+            <h4 matLine>{{file.name}}</h4>
+            <ng-container *ngIf="progress">
+                <mat-progress-bar *ngIf="(progress[file.name].progress | async) as percent; else failed" mode="determinate" [value]="percent"></mat-progress-bar>
+                <ng-template #failed>
+                    <mat-progress-bar mode="determinate" [value]="0" color="warn"></mat-progress-bar>
+                </ng-template>
+            </ng-container>
+        </mat-list-item>
+    </mat-list>
+</div>
+<div mat-dialog-actions class="align-right">
+    <button type="button" *ngIf="uploadStatus !== 2" [disabled]="this.files.size === 0" mat-raised-button color="primary" (click)="uploadFiles()">{{primaryButtonText}}</button>
+    <button type="button" *ngIf="uploadStatus !== 1" mat-raised-button mat-dialog-close color="primary">Close</button>
+</div>

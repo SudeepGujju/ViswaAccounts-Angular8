@@ -15,8 +15,8 @@ export enum GroupType {
 export function GroupTypeMapping(grpType) {
 
     switch (grpType) {
-        case 1 : return 'Trading';
-        case 2 : return 'Profit And Loss';
-        case 3 : return 'Balance Sheet';
+        case GroupType.Trading : return 'Trading';
+        case GroupType.ProfitAndLoss : return 'Profit And Loss';
+        case GroupType.BalanceSheet : return 'Balance Sheet';
     }
 }

@@ -57,3 +57,14 @@ export function CashRCreditTypeMapping(cashRcredit) {
   }
 
 }
+
+export function InventoryTypeCode(inventoryType: InventoryType) {
+
+  switch (inventoryType) {
+    case InventoryType.Sale : return '1004';
+    case InventoryType.Purchase : return '1002';
+    case InventoryType.SaleReturn : return '1006';
+    case InventoryType.PurchaseReturn : return '1007';
+    default : return '';
+  }
+}

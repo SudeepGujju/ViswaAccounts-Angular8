@@ -1,0 +1,154 @@
+<form [formGroup]="accountDtlsForm" (ngSubmit)="save()">
+    <div class="flex-title" mat-dialog-title>
+        <div>{{pageMode}} - Account</div>
+        <div mat-dialog-close>
+            <button type="button" mat-icon-button isIconButton="true" aria-label="close dialog" tabindex="-1"><mat-icon>close</mat-icon></button>
+        </div>
+    </div>
+    <div mat-dialog-content>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field  [class.cus-readonly]="!isCreateMode">
+                <mat-label>Code</mat-label>
+                <input matInput formControlName="code" required [readonly]="!isCreateMode" maxlength="10" uppercase>
+                <mat-spinner *ngIf="code.pending" mode="indeterminate" diameter="20" matSuffix></mat-spinner>
+                <mat-hint align="end">
+                    {{code.value.length}}/10
+                </mat-hint>
+                <mat-error *ngIf="code.hasError('required') || code.hasError('alreadyExists')">
+                    {{code.hasError('alreadyExists') ? 'Code already exists' : 'Enter code'}}
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="firmName" required maxlength="50">
+                <mat-hint align="end">
+                    {{firmName.value.length}}/50
+                </mat-hint>
+                <mat-error *ngIf="firmName.hasError('required')">
+                    Enter name
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field>
+                <mat-label>Proprietor</mat-label>
+                <input matInput formControlName="proprietor" maxlength="50">
+                <mat-hint align="end">
+                    {{proprietor.value.length}}/50
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Phone</mat-label>
+                <input type="text" matInput id="phone" formControlName="phone" maxlength="10" minlength="10" numbersOnly>
+                <mat-hint align="end">
+                    {{phone.value.length}}/10
+                </mat-hint>
+                <mat-error *ngIf="phone.hasError('minlength') || phone.hasError('maxlength')">
+                    Phone number must be 10 characters
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field>
+                <mat-label>Door No.</mat-label>
+                <input matInput formControlName="dno" maxlength="30">
+                <mat-hint align="end">
+                    {{dno.value.length}}/30
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Street</mat-label>
+                <input matInput formControlName="strtNo" maxlength="30">
+                <mat-hint align="end">
+                    {{strtNo.value.length}}/30
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field>
+                <mat-label>Area</mat-label>
+                <input matInput formControlName="area" maxlength="50">
+                <mat-hint align="end">
+                    {{area.value.length}}/50
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Town</mat-label>
+                <input matInput formControlName="town" maxlength="50">
+                <mat-hint align="end">
+                    {{town.value.length}}/50
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field>
+                <mat-label>Drug License 1</mat-label>
+                <input matInput formControlName="dl1" maxlength="50">
+                <mat-hint align="end">
+                    {{dl1.value.length}}/50
+                </mat-hint>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Drug License 2</mat-label>
+                <input matInput formControlName="dl2" maxlength="50">
+                <mat-hint align="end">
+                    {{dl2.value.length}}/50
+                </mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field>
+                <mat-label>GST</mat-label>
+                <input matInput formControlName="gst" minlength="2" maxlength="15" uppercase>
+                <mat-hint align="end">
+                    {{gst.value.length}}/15
+                </mat-hint>
+                <mat-error *ngIf="gst.hasError('minlength') || gst.hasError('maxlength')">
+                    GST must be 2-15 characters
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Mail ID</mat-label>
+                <input matInput formControlName="mailid" maxlength="50">
+                <mat-hint align="end">
+                    {{mailid.value.length}}/50
+                </mat-hint>
+                <mat-error *ngIf="mailid.hasError('email')">
+                    Enter valid mail id
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div class="flex-space" [class.flex-space-sm]="isSmallScrn">
+            <mat-form-field class="space-full">
+                <mat-label>Opening Balance</mat-label>
+                <input type="text" matInput formControlName="opngBalAmt" maxlength="15" [numbersOnly]="{allowDecimal: true, allowNegative: true, setDefaultValue: true}">
+            </mat-form-field>
+        </div>
+        <div class="flex-space" matAutocompleteOrigin #groupCodeOrigin="matAutocompleteOrigin">
+            <mat-form-field class="space-3">
+                <mat-label>Group Code</mat-label>
+                <input type="text" matInput formControlName="groupCode" maxlength="10"
+                    [matAutocomplete]="autoGrpCode" required [matAutocompleteConnectedTo]="groupCodeOrigin"
+                    (blur)="validateNSetgroupCode($event.target.value)" uppercase>
+                <mat-error *ngIf="groupCode.hasError('InvalidCode')">
+                    Enter valid code
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Group Name</mat-label>
+                <input type="text" matInput readonly #groupCodeFirmName tabindex="-1">
+            </mat-form-field>
+            <mat-autocomplete #autoGrpCode="matAutocomplete" [autoActiveFirstOption]="true"
+                (optionActivated)="onSelectgroupCode($event)" (optionSelected)="onSelectgroupCode($event)">
+                <mat-option *ngFor="let option of filteredGroupOptions | async;" [value]="option.code">
+                    {{option.code + " - " + option.name}}
+                </mat-option>
+            </mat-autocomplete>
+            <button type="button" mat-mini-fab color="primary" title="Create Group" (click)="createGroup()" ><mat-icon>add</mat-icon></button>
+        </div>
+    </div>
+    <div mat-dialog-actions align="end">
+        <button type="button" mat-stroked-button mat-dialog-close color="primary" style="font-weight: bold;">CLOSE</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!accountDtlsForm.valid || inProgress" style="font-weight: bold;">SAVE&nbsp;<mat-icon>save</mat-icon></button>
+    </div>
+</form>

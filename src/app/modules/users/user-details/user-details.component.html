@@ -1,0 +1,93 @@
+<form [formGroup]="registrationForm" (ngSubmit)="save()">
+    <div class="flex-title" mat-dialog-title>
+        <div>{{pageMode}} - User</div>
+        <div mat-dialog-close>
+            <button type="button" mat-icon-button isIconButton="true" aria-label="close dialog" tabindex="-1"><mat-icon>close</mat-icon></button>
+        </div>
+    </div>
+    <div mat-dialog-content>
+        <div class="flex-space-col">
+            <mat-form-field class="space-full" [class.cus-readonly]="!this.isCreateMode">
+                <mat-label>Login ID</mat-label>
+                <input type="text" matInput formControlName="loginID" required minlength="3" maxlength="15" [readonly]="!this.isCreateMode">
+                <mat-error *ngIf="loginID.hasError('required')">
+                    Enter login ID
+                </mat-error>
+                <mat-error *ngIf="loginID.hasError('minlength')">
+                    Login ID must be 3-15 characters
+                </mat-error>
+                <mat-error *ngIf="loginID.hasError('userAlreadyExists')">
+                    Login ID already exists
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="space-full">
+                <mat-label>Username</mat-label>
+                <input type="text" matInput formControlName="username" required minlength="1" maxlength="30">
+                <mat-error *ngIf="username.hasError('required')">
+                    Enter username
+                </mat-error>
+                <mat-error *ngIf="username.hasError('minlength')">
+                    Username must be 1-30 characters
+                </mat-error>
+                <mat-error *ngIf="username.hasError('userAlreadyExists')">
+                    Username already exists
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="space-full">
+                <mat-label>Phone</mat-label>
+                <input type="text" matInput id="phone" formControlName="phone" maxlength="10" minlength="10" numbersOnly required>
+                <mat-error *ngIf="phone.hasError('required')">
+                    Enter phone number
+                </mat-error>
+                <mat-error *ngIf="phone.hasError('minlength') || phone.hasError('maxlength')">
+                    Phone number must be 10 characters
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="space-full">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="password" required minlength="8" maxlength="15">
+                <mat-error *ngIf="password.hasError('required')">
+                    Enter password
+                </mat-error>
+                <mat-error *ngIf="password.hasError('minlength')">
+                    Password must be 8-15 characters
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="space-full">
+                <mat-label>Confirm Password</mat-label>
+                <input type="password" matInput formControlName="cpassword" required minlength="8" maxlength="15" [errorStateMatcher]="passwordErrorStateMatcher">
+                <mat-error *ngIf="cpassword.hasError('required')">
+                    Enter confirm password
+                </mat-error>
+                <mat-error *ngIf="registrationForm.hasError('pswdNotMatch')">
+                    Passwords do not match
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="space-full">
+                <mat-label>Year</mat-label>
+                <mat-select formControlName="finYear" required>
+                    <mat-option value="2018-2019">2018 - 2019</mat-option>
+                    <mat-option value="2019-2020">2019 - 2020</mat-option>
+                    <mat-option value="2020-2021">2020 - 2021</mat-option>
+                </mat-select>
+                <mat-error *ngIf="finYear.hasError('required')">
+                    Select year
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field class="space-full" style="display: none;">
+                <mat-label>User Status</mat-label>
+                <mat-select formControlName="status" required>
+                    <mat-option [value]="userStatus.Active">Active</mat-option>
+                    <mat-option [value]="userStatus.Inactive">Inactive</mat-option>
+                </mat-select>
+                <mat-error *ngIf="status.hasError('required')">
+                    Select User Status
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div mat-dialog-actions align="end">
+        <button type="button" mat-stroked-button mat-dialog-close color="primary" style="font-weight: bold;">CLOSE</button>
+        <button type="submit" mat-raised-button color="primary" [disabled]="!registrationForm.valid || inProgress" style="font-weight: bold;">SAVE&nbsp;<mat-icon>save</mat-icon></button>
+    </div>
+</form>

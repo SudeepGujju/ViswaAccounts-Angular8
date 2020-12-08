@@ -14,9 +14,9 @@
             </mat-error>
         </mat-form-field>
         <div>
-            <button type="button" mat-raised-button color="primary" (click)="search()" [disabled]="!productForm.valid || inProgress">Search</button>
+            <button type="button" mat-mini-fab color="primary" (click)="search()" [disabled]="!productForm.valid || inProgress" title="Search"><mat-icon>search</mat-icon></button>
             &nbsp;
-            <button mat-raised-button color="primary" (click)="exportData()" [disabled]="(productListDS.filteredData.length === 0)">Export</button>
+            <button type="button" mat-mini-fab color="primary" (click)="exportData()" title="Download List" [disabled]="(productListDS.filteredData.length === 0)"><mat-icon>save_alt</mat-icon></button>
         </div>
     </div>
 </form>

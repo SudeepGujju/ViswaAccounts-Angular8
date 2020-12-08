@@ -22,6 +22,6 @@
     </div>
 </div>
 <div mat-dialog-actions class="align-right">
-    <button type="button" mat-raised-button color="primary" [disabled]="!file || inProgress" (click)="uploadFile()">Upload</button>
+    <button type="button" mat-raised-button color="primary" [disabled]="!file || inProgress" (click)="uploadFile()">Upload<mat-icon class="rotate-180">save_alt</mat-icon></button>
     <button type="button" mat-raised-button mat-dialog-close color="primary">Close</button>
 </div>

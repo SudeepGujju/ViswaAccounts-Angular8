@@ -12,9 +12,9 @@ import { QuantityCounterComponent } from './components/quantity-counter/quantity
     ReactiveFormsModule,
     MaterialModule,
     NgxMaskModule.forChild({
-      specialCharacters: ["/"]
+      specialCharacters: ['/']
     })
   ],
-  exports:[QuantityCounterComponent]
+  exports: [QuantityCounterComponent]
 })
 export class SharedModule { }

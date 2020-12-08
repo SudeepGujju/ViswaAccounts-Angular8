@@ -1,3 +1,3 @@
-export class Breadcrumb{
-    constructor(public name: string, public iconName?: string){}
+export class Breadcrumb {
+    constructor(public name: string, public iconName?: string) {}
 }

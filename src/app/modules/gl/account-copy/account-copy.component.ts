@@ -5,12 +5,13 @@ import { AuthService } from '../../../services/auth.service';
 import { CustomErrorStateMatcher } from '../../../utils/CustomErrorStateMatcher';
 import { DateValidator, FromToDateValidation } from '../../../utils/date-validate';
 import { getDefaultDate } from '../../../utils/number-only.directive';
-import { ShopService } from '../../../services/shop.service';
-import { Shop } from '../../../data-model';
+import { AccountService } from '../../../services/account.service';
+import { Account } from '../../../data-model';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
 import { GlService } from '../gl.service';
 import { AlertService } from '../../';
+import { formatDate } from 'app/modules/shared/utils/date';
 
 @Component({
   selector: 'app-account-copy',
@@ -20,18 +21,18 @@ import { AlertService } from '../../';
 export class AccountCopyComponent implements OnInit {
 
   public accountCopyForm: FormGroup;
-  public inProgress: Boolean;
+  public inProgress: boolean;
   public dateErrorStateMatcher: ErrorStateMatcher;
-  private shopsList: Shop[] = [];
-  public filteredOption: Observable<Shop[]>;
+  private shopsList: Account[] = [];
+  public filteredOption: Observable<Account[]>;
   public recordsList = null;
   public defaultDate = getDefaultDate();
 
-  constructor(public fb: FormBuilder, private authSrvc: AuthService, private shpSrvc: ShopService, private glSrvc: GlService, private alrtSrvc: AlertService){}
+  constructor(public fb: FormBuilder, private authSrvc: AuthService, private accountSrvc: AccountService, private glSrvc: GlService, private alrtSrvc: AlertService) {}
 
   ngOnInit() {
 
-    this.shpSrvc.getDropdownList().subscribe(
+    this.accountSrvc.getDropdownList().subscribe(
       (resp) => {
         this.shopsList = resp;
       },
@@ -44,7 +45,7 @@ export class AccountCopyComponent implements OnInit {
 
     this.accountCopyForm = this.fb.group({
       fromDate: [
-        "01/04/2019",
+        formatDate(this.authSrvc.finYearStart),
         [
           Validators.required,
           Validators.maxLength(14),
@@ -52,7 +53,7 @@ export class AccountCopyComponent implements OnInit {
         ],
       ],
       toDate: [
-        "30/03/2020",
+        formatDate(this.authSrvc.finYearEnd),
         [
           Validators.required,
           Validators.maxLength(14),
@@ -85,7 +86,7 @@ export class AccountCopyComponent implements OnInit {
     return this.accountCopyForm.get('code') as FormControl;
   }
 
-  private _filter(value: string): Shop[] {
+  private _filter(value: string): Account[] {
     const filterValue = value.toLowerCase();
 
     return this.shopsList.filter(

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GeneralVoucher } from '../data-model';
 import { genVouchNxtRecIDUrl, genVouchUrl } from '../urlConfig';
@@ -11,9 +11,16 @@ import { genVouchNxtRecIDUrl, genVouchUrl } from '../urlConfig';
 })
 export class GeneralVouchersService {
 
-  private genVouchersList: GeneralVoucher[];
+  private listUpdateSubject: Subject<boolean> = new Subject();
+  public listUpdate$: Observable<boolean>;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { 
+    this.listUpdate$ = this.listUpdateSubject.asObservable();
+  }
+
+  notifyToUpdateList(){
+    this.listUpdateSubject.next(true);
+  }
 
   getList(): Observable<GeneralVoucher[]> {
     return this.http.get<GeneralVoucher[]>(genVouchUrl);

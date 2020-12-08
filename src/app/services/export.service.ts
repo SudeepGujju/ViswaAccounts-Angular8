@@ -9,7 +9,7 @@ export class ExportService {
 
   constructor() { }
 
-  public exportAsExcelFile(data: any[], filename: string, config: filterConfig = {filterKeys: [], skipHeader: false}): void {
+  public exportAsExcelFile(data: any[], filename: string, config: FilterConfig = {filterKeys: [], skipHeader: false}): void {
 
     if (config.filterKeys.length > 0) {
       data = this.filterData(data, config.filterKeys);
@@ -65,11 +65,11 @@ export class ExportService {
     for (let i = 0; i < table.rows.length; i++) {
       const cells = table.rows[i].cells;
 
-      for (let i = 0; i < cells.length; i++) {
-        const exportCell = cells[i].getAttribute('data-export') || 'true';
+      for (let j = 0; j < cells.length; j++) {
+        const exportCell = cells[j].getAttribute('data-export') || 'true';
 
         if (exportCell == 'false') {
-          cells[i].remove();
+          cells[j].remove();
         }
       }
     }
@@ -78,7 +78,7 @@ export class ExportService {
   }
 }
 
-interface filterConfig {
+interface FilterConfig {
   filterKeys: any[];
   skipHeader: boolean;
   // colHeading: any[]

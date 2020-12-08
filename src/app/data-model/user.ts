@@ -1,5 +1,4 @@
 import { Permissions } from './permissions';
-import { Voucher } from './voucher';
 
 export interface User {
     username: string;
@@ -9,7 +8,6 @@ export interface User {
     permissions: Permissions;
     token: string;
     finYear: string;
-    vouchersList?: Voucher[];
     accessToken: string;
     refreshToken: string;
 }

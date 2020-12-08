@@ -8,6 +8,5 @@ export * from './general-voucher.service';
 export * from './group.service';
 export * from './inventory.service';
 export * from './record.service';
-export * from './shop.service';
+export * from './account.service';
 export * from './user.service';
-export * from './vouchers.service';

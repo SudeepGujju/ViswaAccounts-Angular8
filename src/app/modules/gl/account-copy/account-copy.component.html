@@ -46,14 +46,15 @@
                 To date cannot exceed From date
             </mat-error>
         </mat-form-field>
-        <button type="button" mat-raised-button color="primary" (click)="search()" [disabled]="!accountCopyForm.valid || inProgress">Search</button>
-        &nbsp;
-        <!-- <button mat-raised-button color="primary" (click)="exportData()" [disabled]="(bankListDS.filteredData.length === 0)">Export</button> -->
         <mat-autocomplete #autoCode="matAutocomplete" [autoActiveFirstOption]="true"
             (optionActivated)="validateNSetCode($event.option.value, code, firmName)" (optionSelected)="validateNSetCode($event.option.value, code, firmName)">
             <mat-option *ngFor="let option of filteredOption | async;" [value]="option.code">
                 {{option.firmName + (option.town.length > 0 ? ' - ' + option.town : '') }}</mat-option>
         </mat-autocomplete>
+        <div>
+            <button type="button" mat-mini-fab color="primary" (click)="search()" [disabled]="!accountCopyForm.valid || inProgress" title="Search"><mat-icon>search</mat-icon></button>
+            <!-- <button type="button" mat-mini-fab color="primary" (click)="exportData()" [disabled]="(bankListDS.filteredData.length === 0)" title="Export"><mat-icon>save_alt</mat-icon></button> -->
+        </div>
     </div>
 </form>
 <div *ngIf="recordsList" style="max-height: 400px; overflow-y: auto;">

@@ -10,7 +10,7 @@ import { Breadcrumb } from '../breadcrumb';
 export class BreadcrumbComponent implements OnInit {
 
   @Input('config') steps: Breadcrumb[];
-  @Input('activeItemIdx') activeIdx: number = 1;
+  @Input('activeItemIdx') activeIdx = 1;
 
   constructor() { }
 

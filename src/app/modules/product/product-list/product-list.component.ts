@@ -4,10 +4,10 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'app/modules';
-import { Product } from '../../shared/models/product';
+import { Product } from '../../../data-model';
 import { AuthService } from '../../../services/auth.service';
 import { ExportService } from '../../../services/export.service';
-import { FacedService } from 'app/modules/shared/services/faced.service';
+import { FacedService } from 'app/services/faced.service';
 
 @Component({
   selector: 'app-product-list',
@@ -20,7 +20,7 @@ export class ProductListComponent implements OnInit, AfterViewInit {
 
   public productForm: FormGroup;
   public productListDS: MatTableDataSource<Product>;
-  public inProgress: Boolean;
+  public inProgress: boolean;
 
   public exportColumns: string[] = [
     'name',

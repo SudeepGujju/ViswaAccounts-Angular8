@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { User, Voucher } from '../data-model';
+import { User } from '../data-model';
 import { LoginUrl, RefreshTokenUrl, LogoutUrl } from '../urlConfig';
 import { DialogService } from './dialog.service';
 
@@ -68,15 +68,6 @@ export class AuthService {
     this.setUserInStorage(this.currentUser);
   }
 
-  public get vouchersList() {
-    return this.userBehaviourSubject.value.vouchersList || [];
-  }
-
-  public set vouchersList(vouchersList: Voucher[]) {
-    this.userBehaviourSubject.value.vouchersList = vouchersList;
-    this.updateUserData();
-  }
-
   public login(loginID: string, password: string) {
 
     return this.http.post<User>(LoginUrl, { loginID, password }).pipe(
@@ -110,11 +101,13 @@ export class AuthService {
       this.http.post(LogoutUrl, {refreshToken: this.getRefreshToken()}, {responseType: 'text'}).subscribe(
         () => {
           this.dlgSrvc.closeAllDialogs();
+          this.router.navigate([{ outlets: { dialog: null } }]);
           this.router.navigate(['/login']);
           this.clearUserDetails();
         },
         () => {
           this.dlgSrvc.closeAllDialogs();
+          this.router.navigate([{ outlets: { dialog: null } }]);
           this.router.navigate(['/login']);
           this.clearUserDetails();
         }
@@ -137,17 +130,6 @@ export class AuthService {
 
   public refreshToken() {
     return this.http.post<{accessToken: any}>(RefreshTokenUrl, {refreshToken: this.getRefreshToken()}); // .pipe(catchError( (error) => { console.log('auth'); return error; }));
-  }
-
-  private updateUserData() {
-
-    const appData = JSON.parse(localStorage.getItem('appData')) || { usersList: [] };
-
-    const userIndex = appData.usersList.findIndex(x => x.id === this.userID);
-
-    appData.usersList[userIndex] = this.user;
-
-    localStorage.setItem('appData', JSON.stringify(appData));
   }
 
   private setUserInStorage(user) {

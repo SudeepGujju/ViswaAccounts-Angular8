@@ -2,15 +2,26 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AccountCopyComponent } from './account-copy/account-copy.component';
 import { PrepareComponent } from './prepare/prepare.component';
+import { TrailBalanceComponent } from './trail-balance/trail-balance.component';
+import {GroupType } from '../../data-model';
+import { FinancialComponent } from './financial/financial.component';
 
 const routes: Routes = [
   {
-    path: "account",
+    path: 'prepare',
+    component: PrepareComponent
+  },
+  {
+    path: 'account',
     component: AccountCopyComponent
   },
   {
-    path: "prepare",
-    component: PrepareComponent
+    path: 'trail-balance',
+    component: TrailBalanceComponent
+  },
+  {
+    path: 'financials',
+    component: FinancialComponent
   }
 ];
 

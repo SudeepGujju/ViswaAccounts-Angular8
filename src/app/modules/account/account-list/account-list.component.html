@@ -1,0 +1,124 @@
+<div class="flex-space align-left">
+    <div class="mat-title mr-05">
+        Accounts List
+    </div>
+    <mat-form-field class="space-7 mr-05">
+        <mat-label>Filter</mat-label>
+        <input matInput type="text" (keyup)="applyFilter($event.target.value)">
+    </mat-form-field>
+    <div>
+        <button type="button" mat-mini-fab color="primary" (click)="refresh()" title="Refresh"><mat-icon>refresh</mat-icon></button>
+        &nbsp;
+        <button type="button" mat-mini-fab color="primary" (click)="exportData()" title="Download List" [disabled]="(shopsListDS.filteredData.length === 0)"><mat-icon>save_alt</mat-icon></button>
+    </div>
+</div>
+<div class="container mat-elevation-z8">
+    <table mat-table [dataSource]="shopsListDS" [trackBy]="trackList" matSort>
+        <ng-container matColumnDef="code">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Code</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.code}}</td>
+        </ng-container>
+        <ng-container matColumnDef="firmName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Firm Name</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.firmName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="proprietor">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Proprietor</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.proprietor}}</td>
+        </ng-container>
+        <ng-container matColumnDef="dno">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Dno.</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.dno}}</td>
+        </ng-container>
+        <ng-container matColumnDef="strtNo">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Street No</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.strtNo}}</td>
+        </ng-container>
+        <ng-container matColumnDef="area">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Area</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.area}}</td>
+        </ng-container>
+        <ng-container matColumnDef="town">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Town</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.town}}</td>
+        </ng-container>
+        <ng-container matColumnDef="gst">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>GST</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.gst}}</td>
+        </ng-container>
+        <ng-container matColumnDef="dl1">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Drug Lic. 1</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.dl1}}</td>
+        </ng-container>
+        <ng-container matColumnDef="dl2">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Drug Lic. 2</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.dl2}}</td>
+        </ng-container>
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Phone</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.phone}}</td>
+        </ng-container>
+        <ng-container matColumnDef="mailid">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Mail ID</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.mailid}}</td>
+        </ng-container>
+        <ng-container matColumnDef="opngBalAmt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Opening Balance</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.opngBalAmt| number:'.2-2'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="groupCode">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <strong>Group Code</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop">{{shop.groupCode}}</td>
+        </ng-container>
+        <ng-container matColumnDef="oprts">
+            <th mat-header-cell *matHeaderCellDef data-export="false">
+                <strong>Operations</strong>
+            </th>
+            <td mat-cell *matCellDef="let shop" data-export="false">
+                <button type="button" mat-icon-button (click)="edit(shop)" *ngIf="userPersmissions.editAccount">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button type="button" mat-icon-button (click)="delete(shop)" *ngIf="userPersmissions.deleteAccount">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="noData">
+            <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length" data-export="false">
+                No Data Available
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" ></tr>
+        <tr mat-footer-row *matFooterRowDef="['noData']" data-export="false" [hidden]="!(shopsListDS.filteredData.length === 0)" style="text-align: center;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 15, 20, 25]" pageSize="10" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { SocketService } from './services/socket.service';
+import { ServiceWorkerLoggerService } from './services/service-worker-logger.service';
+import { ActivatedRoute, Router, Event, NavigationStart, NavigationError } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,5 +11,5 @@ import { SocketService } from './services/socket.service';
 export class AppComponent {
   title = 'ViswaAccounts';
 
-  constructor(public sck: SocketService){}
+  constructor(public sck: SocketService, public svrc: ServiceWorkerLoggerService) {}
 }

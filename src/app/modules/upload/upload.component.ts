@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { Router, ActivatedRoute, ParamMap} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Router, ActivatedRoute, ParamMap} from '@angular/router';
 import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
 
 @Component({
@@ -14,8 +14,8 @@ export class UploadComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    
-    this.route.queryParamMap.subscribe( (queryparamMap: ParamMap)=> {
+
+    this.route.queryParamMap.subscribe( (queryparamMap: ParamMap) => {
         this.openDialog(+queryparamMap.get('ModuleType'));
     });
 
@@ -24,11 +24,11 @@ export class UploadComponent implements OnInit {
   public openDialog(ModuleType: number) {
 
     const dialogRef = this.dialog.open(UploadDialogComponent, {
-      minHeight: "150px",
-      minWidth: "500px",
+      minHeight: '150px',
+      minWidth: '500px',
       restoreFocus: false,
       disableClose: true,
-      role: "dialog",
+      role: 'dialog',
       hasBackdrop: true,
       data: {
         ModuleType

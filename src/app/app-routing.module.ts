@@ -1,59 +1,68 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BankDetailsComponent } from './components/bank-details/bank-details.component';
-import { BankListComponent } from './components/bank-list/bank-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { GenVoucherListComponent } from './components/gen-voucher-list/gen-voucher-list.component';
-import { GroupsListComponent } from './components/groups-list/groups-list.component';
-import { InventoryListComponent } from './components/inventory-list/inventory-list.component';
-import { LoginComponent } from './components/login/login.component';
-import { RecordsComponent } from './components/records/records.component';
-import { RegistrationComponent } from './components/registration/registration.component';
-import { ShopListComponent } from './components/shop-list/shop-list.component';
-import { UsersListComponent } from './components/users-list/users-list.component';
-import { VouchersListComponent } from './components/vouchers-list/vouchers-list.component';
 import { AuthGuard } from './guards';
 
 const routes: Routes = [
   {
-    path: 'register',
-    canActivate: [AuthGuard],
-    component: RegistrationComponent,
-  },
-  {
     path: 'login',
     canActivate: [AuthGuard],
-    component: LoginComponent,
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/login/login.module').then( m => m.LoginModule),
   },
   {
-    path: 'AccountsList',
-    canActivate: [AuthGuard],
-    component: ShopListComponent,
+    path: 'dialog/group',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/group/group.module').then( m => m.GroupModule),
+    outlet: 'dialog'
   },
   {
-    path: 'VouchersList',
-    canActivate: [AuthGuard],
-    component: VouchersListComponent,
+    path: 'group',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/group/group.module').then( m => m.GroupModule),
   },
   {
-    path: 'InventoryList',
-    canActivate: [AuthGuard],
-    component: InventoryListComponent,
+    path: 'dialog/account',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/account/account.module').then( m => m.AccountModule),
+    outlet: 'dialog'
   },
   {
-    path: 'GroupsList',
-    canActivate: [AuthGuard],
-    component: GroupsListComponent,
+    path: 'account',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/account/account.module').then( m => m.AccountModule),
   },
   {
-    path: 'GeneralVouchersList',
-    canActivate: [AuthGuard],
-    component: GenVoucherListComponent,
+    path: 'bank',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/bank/bank.module').then( m => m.BankModule),
   },
   {
-    path: 'Records',
-    canActivate: [AuthGuard],
-    component: RecordsComponent,
+    path: 'dialog/inventory',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/inventory/inventory.module').then( m => m.InventoryModule),
+    outlet: 'dialog'
+  },
+  {
+    path: 'inventory',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/inventory/inventory.module').then( m => m.InventoryModule),
+  },
+  {
+    path: 'dialog/general-voucher',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/general-voucher/general-voucher.module').then( m => m.GeneralVoucherModule),
+    outlet: 'dialog'
+  },
+  {
+    path: 'general-voucher',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/general-voucher/general-voucher.module').then( m => m.GeneralVoucherModule),
+  },
+  {
+    path: 'gst',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/gst/gst.module').then( m => m.GstModule)
   },
   {
     path: 'dashboard',
@@ -61,19 +70,15 @@ const routes: Routes = [
     component: DashboardComponent,
   },
   {
-    path: 'UsersList',
-    canActivate: [AuthGuard],
-    component: UsersListComponent
+    path: 'dialog/user',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/users/users.module').then( m => m.UsersModule),
+    outlet: 'dialog'
   },
   {
-    path: 'CreateBank',
-    canActivate: [AuthGuard],
-    component: BankDetailsComponent
-  },
-  {
-    path: 'BanksList',
-    canActivate: [AuthGuard],
-    component: BankListComponent
+    path: 'user',
+    canLoad: [AuthGuard],
+    loadChildren: () => import('./modules/users/users.module').then( m => m.UsersModule)
   },
   // {
   //   path: 'ProductsList',
@@ -82,26 +87,22 @@ const routes: Routes = [
   // },
   {
     path: 'product',
-    canActivate: [AuthGuard],
     canLoad: [AuthGuard],
     loadChildren: () => import('./modules/product/product.module').then( m => m.ProductModule),
   },
   {
     path: 'upload',
-    canActivate: [AuthGuard],
     canLoad: [AuthGuard],
     loadChildren: () => import('./modules/upload/upload.module').then( m => m.UploadModule),
     outlet: 'dialog'
   },
   {
-    path: 'GL',
-    canActivate: [AuthGuard],
+    path: 'gl',
     canLoad: [AuthGuard],
     loadChildren: () => import('./modules/gl/gl.module').then( m => m.GlModule)
   },
   {
     path: 'order',
-    canActivate: [AuthGuard],
     canLoad: [AuthGuard],
     loadChildren: () => import('./modules/order/order.module').then( m => m.OrderModule )
   },

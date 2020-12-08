@@ -1,31 +1,12 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { forkJoin } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 import { FileUploadComponent } from '../components/file-upload/file-upload.component';
-import { RegistrationComponent } from '../components/registration/registration.component';
-import { ShopDetailsComponent } from '../components/shop-details/shop-details.component';
-import { GroupDetailsComponent } from '../components/group-details/group-details.component';
-import { UserPermissionsComponent } from '../components/user-permissions/user-permissions.component';
-import { GeneralVouchersService } from './general-voucher.service';
-import { GroupService } from './group.service';
-import { InventoryService } from './inventory.service';
-import { ShopService } from './shop.service';
-import { UserService } from './user.service';
-// import { VoucherService } from './vouchers.service';
-import { InventoryDetailsComponent } from '../components/inventory-details/inventory-details.component';
-import { GenVoucherDetailsComponent } from '../components/gen-voucher-details/gen-voucher-details.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DialogService {
   constructor(
-    private shpSrvc: ShopService,
-    // private vouchSrvc: VoucherService,
-    private invtrySrvc: InventoryService,
-    private grpSrvc: GroupService,
-    private genVochSrvc: GeneralVouchersService,
-    private userSrvc: UserService,
     private dialog: MatDialog
   ) {}
 
@@ -34,13 +15,12 @@ export class DialogService {
   }
 
   openDialog(pageName: string, key?: string) {
-    if (pageName === 'createVchr') {
-      // this.vouchSrvc.openVoucherDtlsPage();
-    } else if (pageName === 'uploadFile') {
+    if (pageName === 'uploadFile') {
       this.openUploadDialog();
     }
   }
 
+  /*
   public openUserDialog(id?: string) {
     if (!id) {
       this.dialog.open(RegistrationComponent, {
@@ -112,7 +92,7 @@ export class DialogService {
       });
     }
   }
-/*
+
   public openUploadGroupDialog() {
     this.dialog.open(GroupUploadComponent, {
       minHeight: '150px',
@@ -156,7 +136,7 @@ export class DialogService {
       hasBackdrop: true,
     });
   }
-*/
+
   public openAccountDialog(id?: string) {
     if (!id) {
       this.grpSrvc.getDropdownList().subscribe((grpList) => {
@@ -174,7 +154,7 @@ export class DialogService {
       });
     } else {
       forkJoin([
-        this.shpSrvc.get(id),
+        this.accountSrvc.get(id),
         this.grpSrvc.getDropdownList()
       ]).subscribe(([account, grpList]) => {
         this.dialog.open(ShopDetailsComponent, {
@@ -195,7 +175,7 @@ export class DialogService {
 
   openInventoryDialog(id?: string) {
     if (!id) {
-      this.shpSrvc.getDropdownList().subscribe((accountsList) => {
+      this.accountSrvc.getDropdownList().subscribe((accountsList) => {
         this.dialog.open(InventoryDetailsComponent, {
           width: '550px',
           role: 'dialog',
@@ -211,7 +191,7 @@ export class DialogService {
     } else {
       forkJoin([
         this.invtrySrvc.get(id),
-        this.shpSrvc.getDropdownList()
+        this.accountSrvc.getDropdownList()
       ]).subscribe(([inventory, accountsList]) => {
         this.dialog.open(InventoryDetailsComponent, {
           width: '550px',
@@ -233,7 +213,7 @@ export class DialogService {
     if (!id) {
       forkJoin([
         this.genVochSrvc.getNextId(),
-        this.shpSrvc.getDropdownList()
+        this.accountSrvc.getDropdownList()
       ]).subscribe(([No, accountsList]) => {
         this.dialog.open(GenVoucherDetailsComponent, {
           role: 'dialog',
@@ -250,7 +230,7 @@ export class DialogService {
     } else {
       forkJoin([
         this.genVochSrvc.get(id),
-        this.shpSrvc.getDropdownList()
+        this.accountSrvc.getDropdownList()
       ]).subscribe(([genVoucher, accountsList]) => {
         this.dialog.open(GenVoucherDetailsComponent, {
           role: 'dialog',
@@ -266,7 +246,7 @@ export class DialogService {
       });
     }
   }
-
+*/
   openUploadDialog() {
     this.dialog.open(FileUploadComponent, {
       minHeight: '150px',

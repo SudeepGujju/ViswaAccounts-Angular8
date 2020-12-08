@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Group } from '../data-model';
 import { groupCodeAvailUrl, groupUrl, groupDropdownUrl, groupUploadUrl } from '../urlConfig';
@@ -11,7 +11,16 @@ import { environment } from 'environments/environment';
 })
 export class GroupService {
 
-  constructor(private http: HttpClient) {}
+  private listUpdateSubject: Subject<boolean> = new Subject();
+  public listUpdate$: Observable<boolean>;
+
+  constructor(private http: HttpClient) { 
+    this.listUpdate$ = this.listUpdateSubject.asObservable();
+  }
+
+  notifyToUpdateList(){
+    this.listUpdateSubject.next(true);
+  }
 
   getDropdownList(): Observable<Group[]> {
     return this.http.get<Group[]>(groupDropdownUrl);

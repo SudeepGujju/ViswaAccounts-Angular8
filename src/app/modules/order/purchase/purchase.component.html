@@ -194,4 +194,7 @@
         <button type="button" mat-raised-button color="primary" (click)="previousStage()"><mat-icon>arrow_back_ios</mat-icon> Back</button>
         <button type="button" mat-raised-button color="primary" (click)="nextStage()">Place Order <mat-icon>grading</mat-icon></button>
     </div>
+    <div *ngIf="currentStage == 4" class="flex">
+        <button type="button" mat-raised-button color="primary" (click)="previousStage()"><mat-icon>arrow_back_ios</mat-icon> Back</button>
+    </div>
 </div>

@@ -1,0 +1,113 @@
+<div *ngIf="currentReport == 0" style="width: 100%;height: 80vh;flex-direction: column;justify-content: center;text-align: center;display: flex;">
+    <div style="width: 100%;">
+        <h2 style="font-weight: initial;">
+            Enter Closing Stock
+        </h2>
+    </div>
+    <div style="width: 100%;">
+        <mat-form-field style="width:25%" class="mr-05">
+            <mat-label>Closing Stock</mat-label>
+            <input type="text" matInput [(ngModel)]="closingStock" #closingStockFld="ngModel" maxlength="15" [numbersOnly]="{allowDecimal: true, allowNegative: false, setDefaultValue: true}" required>
+        </mat-form-field>
+        <button type="button" mat-raised-button color="primary" (click)="getTradingList()" [disabled]="closingStockFld.invalid">Show Trading List</button>
+    </div>
+</div>
+<div *ngIf="currentReport > 0">
+    <div class="flex-space align-left">
+        <div class="mat-title mr-05">
+            {{currentReportName}}
+        </div>
+        <button type="button" class="mr-05" mat-raised-button color="primary" (click)="changeClosingStock()">Change Closing Stock</button>
+        <button type="button" class="mr-05" mat-raised-button color="primary" (click)="getTradingList()"      *ngIf="currentReport > 1">Show Trading List</button>
+        <button type="button" class="mr-05" mat-raised-button color="primary" (click)="getProfitNLossList()"  *ngIf="currentReport == 1 || currentReport == 3">Show Profit And Loss List</button>
+        <button type="button" class="mr-05" mat-raised-button color="primary" (click)="getBalanceSheetList()" *ngIf="currentReport == 2">Show Balance Sheet</button>
+    </div>
+    <div class="container mat-elevation-z8">
+        <!-- [trackBy]="trackList" -->
+        <table mat-table [dataSource]="financialListDS" matSort>
+            <ng-container matColumnDef="DbCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <strong>Debit Code</strong>
+                </th>
+                <td mat-cell *matCellDef="let account">{{account.DbCode}}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong>Total Debit</strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="DbAccName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <strong>Debit Account</strong>
+                </th>
+                <td mat-cell *matCellDef="let account">{{account.DbAccName}}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong>&nbsp;</strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="DbAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <strong>Debit Amount</strong>
+                </th>
+                <td mat-cell *matCellDef="let account">{{account.DbAmount}}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong>{{totalDebit}}</strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CrCode">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <strong>Credit Code</strong>
+                </th>
+                <td mat-cell *matCellDef="let account">{{account.CrCode}}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong>Total Credit</strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CrAccName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <strong>Credit Account</strong>
+                </th>
+                <td mat-cell *matCellDef="let account">{{account.CrAccName}}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong>&nbsp;</strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="CrAmount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <strong>Credit Amount</strong>
+                </th>
+                <td mat-cell *matCellDef="let account">{{account.CrAmount}}</td>
+                <td mat-footer-cell *matFooterCellDef>
+                    <strong>{{totalCredit}}</strong>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="noData">
+                <td mat-footer-cell *matFooterCellDef [attr.colspan]="columnsToDisplay.length" style="text-align: center;">
+                    No Data Available
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Profit">
+                <td mat-footer-cell *matFooterCellDef [attr.colspan]="2">
+                    {{profitLabel}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="ProfitAmount">
+                <td mat-footer-cell *matFooterCellDef>
+                    {{profitAmount}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Loss">
+                <td mat-footer-cell *matFooterCellDef [attr.colspan]="2">
+                    {{lossLabel}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="LossAmount">
+                <td mat-footer-cell *matFooterCellDef>
+                    {{lossAmount}}
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsToDisplay;" ></tr>
+            <tr mat-footer-row *matFooterRowDef="financialListDS.filteredData.length === 0 ? ['noData'] : footerColumnsToDisplay; sticky: true"></tr>
+            <tr mat-footer-row *matFooterRowDef="columnsToDisplay; sticky: true"></tr>
+        </table>
+    </div>
+</div>

@@ -3,7 +3,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 
 export class CustomErrorStateMatcher implements ErrorStateMatcher {
 
-  constructor(private errorName: string){}
+  constructor(private errorName: string) {}
 
   isErrorState(
     control: FormControl | null,

@@ -5,57 +5,25 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BankDetailsComponent } from './components/bank-details/bank-details.component';
-import { BankListComponent } from './components/bank-list/bank-list.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
-import { GenVoucherDetailsComponent } from './components/gen-voucher-details/gen-voucher-details.component';
-import { GenVoucherListComponent } from './components/gen-voucher-list/gen-voucher-list.component';
-import { GroupDetailsComponent } from './components/group-details/group-details.component';
-import { GroupsListComponent } from './components/groups-list/groups-list.component';
-import { InventoryDetailsComponent } from './components/inventory-details/inventory-details.component';
-import { InventoryListComponent } from './components/inventory-list/inventory-list.component';
 import { LoaderComponent } from './components/loader/loader.component';
-import { LoginComponent } from './components/login/login.component';
-import { RecordsComponent } from './components/records/records.component';
-import { RegistrationComponent } from './components/registration/registration.component';
-import { ShopDetailsComponent } from './components/shop-details/shop-details.component';
-import { ShopListComponent } from './components/shop-list/shop-list.component';
-import { UserPermissionsComponent } from './components/user-permissions/user-permissions.component';
-import { UsersListComponent } from './components/users-list/users-list.component';
-import { VouchersDetailsComponent } from './components/vouchers-details/vouchers-details.component';
-import { VouchersListComponent } from './components/vouchers-list/vouchers-list.component';
 import { ErrorInterceptor, LoaderInterceptor, TokenInterceptor } from './interceptor';
 import { AlertModule, MaterialModule } from './modules';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SharedDirectives } from './utils/number-only.directive';
 import { NgxMaskModule } from 'ngx-mask';
 import { SharedModule } from './modules/shared/shared.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    LoginComponent,
-    RegistrationComponent,
     DashboardComponent,
-    ShopDetailsComponent,
-    ShopListComponent,
-    VouchersListComponent,
-    VouchersDetailsComponent,
-    InventoryDetailsComponent,
-    GroupDetailsComponent,
-    InventoryListComponent,
-    GroupsListComponent,
-    GenVoucherDetailsComponent,
-    GenVoucherListComponent,
     FileUploadComponent,
-    RecordsComponent,
-    UsersListComponent,
-    UserPermissionsComponent,
-    BankDetailsComponent,
-    LoaderComponent,
-    BankListComponent
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +37,8 @@ import { SharedModule } from './modules/shared/shared.module';
     SharedModule,
     NgxMaskModule.forRoot({
       dropSpecialCharacters: false
-    })
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true },
@@ -77,15 +46,7 @@ import { SharedModule } from './modules/shared/shared.module';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   entryComponents: [
-    FileUploadComponent,
-    RegistrationComponent,
-    ShopDetailsComponent,
-    VouchersDetailsComponent,
-    InventoryDetailsComponent,
-    GroupDetailsComponent,
-    GenVoucherDetailsComponent,
-    UserPermissionsComponent,
-    BankDetailsComponent
+    FileUploadComponent
   ],
   bootstrap: [AppComponent],
 })

@@ -47,8 +47,7 @@ export class UploadDialogComponent implements OnInit {
           this.upload();
         }
       });
-    }
-    else {
+    } else {
       this.upload();
     }
 

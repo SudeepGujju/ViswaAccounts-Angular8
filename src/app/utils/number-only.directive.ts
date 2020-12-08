@@ -125,7 +125,7 @@ export function formatDate(finalValue): string {
 
   if (values[0]) { values[0] = checkValue(values[0], 31); }
   if (values[1]) { values[1] = checkValue(values[1], 12); }
-  const output = values.map((v, i) => v.length === 2 && i < 2 ? v + ' / ' : v );
+  const output = values.map((v, i) => v.length === 2 && i < 2 ? v + '/' : v );
   finalValue = output.join('').substr(0, 14);
 
   return finalValue;
@@ -190,4 +190,4 @@ export class UpperCaseDirective {
     UpperCaseDirective
   ]
 })
-export class SharedDirectives{}
+export class SharedDirectives {}

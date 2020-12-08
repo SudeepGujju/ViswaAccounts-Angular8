@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Inventory } from '../data-model';
 import { inventoryNxtRecIDUrl, inventoryUrl, inventoryUploadUrl, inventorySearchUrl } from '../urlConfig';
@@ -11,7 +11,16 @@ import { inventoryNxtRecIDUrl, inventoryUrl, inventoryUploadUrl, inventorySearch
 })
 export class InventoryService {
 
-  constructor(private http: HttpClient) {}
+  private listUpdateSubject: Subject<boolean> = new Subject();
+  public listUpdate$: Observable<boolean>;
+
+  constructor(private http: HttpClient) { 
+    this.listUpdate$ = this.listUpdateSubject.asObservable();
+  }
+
+  notifyToUpdateList(){
+    this.listUpdateSubject.next(true);
+  }
 
   getSearchList(inventoryType: string, fromDate: string, toDate: string, code: string): Observable<Inventory[]> {
     return this.http.get<Inventory[]>(inventorySearchUrl, {params: {inventoryType, fromDate, toDate, code}});

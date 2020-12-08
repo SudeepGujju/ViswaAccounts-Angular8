@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 import { Permissions, User } from '../data-model';
 import { AuthService, DisplayService } from '../services';
 import { DialogService } from '../services/dialog.service';
-import { MODULE_TYPE } from '..//constants';
+import { MODULE_TYPE } from '../constants';
 
 @Component({
   selector: 'app-navbar',
@@ -31,7 +31,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public isLoggedIn = false;
   public userObservableSubscription: Subscription;
   public userPersmissions: Permissions = null;
-  public userName: String = null;
+  public userName: string = null;
 
   public reportsArr = [
     { linkName: 'New', type: 'New' },
@@ -91,19 +91,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   openDialog(pageName: string) {
-    if (pageName === 'createAccnt') {
-      this.dlgSrvc.openAccountDialog();
-    } else if (pageName === 'createUser') {
-      this.dlgSrvc.openUserDialog();
-    } else if (pageName === 'createGroup') {
-      this.dlgSrvc.openGroupDialog();
-    } else if (pageName === 'createInvntry') {
-      this.dlgSrvc.openInventoryDialog();
-    } else if (pageName === 'createGenVchr') {
-      this.dlgSrvc.openGeneralVocuerDialog();
-    } else {
-      this.dlgSrvc.openDialog(pageName);
-    }
+    this.dlgSrvc.openDialog(pageName);
   }
 
   logout() {

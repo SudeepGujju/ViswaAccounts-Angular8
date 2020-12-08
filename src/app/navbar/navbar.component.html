@@ -12,8 +12,8 @@
             <ng-container *ngIf="userPersmissions?.createAccount || userPersmissions?.viewListAccount">
                 <button mat-list-item [matMenuTriggerFor]="AccountMenu">Account</button>
                 <mat-menu #AccountMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item (click)="openDialog('createAccnt')" *ngIf="userPersmissions?.createAccount">Create</button >
-                    <button mat-menu-item [routerLink]="'/AccountsList'" *ngIf="userPersmissions?.viewListAccount">List</button>
+                    <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'account', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createAccount">Create</button >
+                    <button mat-menu-item [routerLink]="'/account/list'" *ngIf="userPersmissions?.viewListAccount">List</button>
                     <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'account']}}]" [queryParams]="{ModuleType: MODULE_TYPE.ACCOUNT}" [skipLocationChange]="true" *ngIf="userPersmissions?.createAccount">Upload</button>
                 </mat-menu>
             </ng-container>
@@ -27,44 +27,37 @@
             <ng-container *ngIf="userPersmissions?.createBank || userPersmissions?.viewListBank">
                 <button mat-list-item [matMenuTriggerFor]="BankMenu">Bank</button>
                 <mat-menu #BankMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item [routerLink]="'/CreateBank'" *ngIf="userPersmissions?.createBank">Create</button>
-                    <button mat-menu-item [routerLink]="'/BanksList'" *ngIf="userPersmissions?.viewListBank">List</button>
-                </mat-menu>
-            </ng-container>
-            <ng-container *ngIf="userPersmissions?.createVoucher || userPersmissions?.viewListVoucher">
-                <button mat-list-item [matMenuTriggerFor]="VoucherMenu">Voucher</button>
-                <mat-menu #VoucherMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item (click)="openDialog('createVchr')" *ngIf="userPersmissions?.createVoucher">Create</button>
-                    <button mat-menu-item [routerLink]="'/VouchersList'" *ngIf="userPersmissions?.viewListVoucher">List</button>
+                    <button mat-menu-item [routerLink]="'/bank/create'" *ngIf="userPersmissions?.createBank">Create</button>
+                    <button mat-menu-item [routerLink]="'/bank/list'" *ngIf="userPersmissions?.viewListBank">List</button>
                 </mat-menu>
             </ng-container>
             <ng-container *ngIf="userPersmissions?.createInventory || userPersmissions?.viewListInventory">
                 <button mat-list-item [matMenuTriggerFor]="InventoryMenu">Inventory</button>
                 <mat-menu #InventoryMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item (click)="openDialog('createInvntry')" *ngIf="userPersmissions?.createInventory">Create</button>
-                    <button mat-menu-item [routerLink]="'/InventoryList'" *ngIf="userPersmissions?.viewListInventory">List</button>
+                    <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'inventory', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createInventory">Create</button>
+                    <button mat-menu-item [routerLink]="'/inventory/list'" *ngIf="userPersmissions?.viewListInventory">List</button>
                     <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'inventory']}}]" [queryParams]="{ModuleType: MODULE_TYPE.INVENTORY}" [skipLocationChange]="true" *ngIf="userPersmissions?.createInventory">Upload</button>
                 </mat-menu>
             </ng-container>
             <ng-container  *ngIf="userPersmissions?.createGroup || userPersmissions?.viewListGroup">
                 <button mat-list-item [matMenuTriggerFor]="GroupMenu">Group</button>
                 <mat-menu #GroupMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item (click)="openDialog('createGroup')" *ngIf="userPersmissions?.createGroup">Create</button>
-                    <button mat-menu-item [routerLink]="'/GroupsList'" *ngIf="userPersmissions?.viewListGroup">List</button>
+                    <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'group', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createGroup">Create</button>
+                    <button mat-menu-item [routerLink]="'/group/list'" *ngIf="userPersmissions?.viewListGroup">List</button>
                     <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'group']}}]" [queryParams]="{ModuleType: MODULE_TYPE.GROUP}" [skipLocationChange]="true" *ngIf="userPersmissions?.createGroup">Upload</button>
                 </mat-menu>
             </ng-container>
             <ng-container *ngIf="userPersmissions?.createGenVoucher || userPersmissions?.viewListGenVoucher">
                 <button mat-list-item [matMenuTriggerFor]="GenVchrMenu">General Voucher</button>
                 <mat-menu #GenVchrMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item (click)="openDialog('createGenVchr')" *ngIf="userPersmissions?.createGenVoucher">Create</button>
-                    <button mat-menu-item [routerLink]="'/GeneralVouchersList'" *ngIf="userPersmissions?.viewListGenVoucher">List</button>
+                    <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'general-voucher', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createGenVoucher">Create</button>
+                    <button mat-menu-item [routerLink]="'/general-voucher/list'" *ngIf="userPersmissions?.viewListGenVoucher">List</button>
                 </mat-menu>
             </ng-container>
             <ng-container *ngIf="userPersmissions?.generateReports">
                 <button mat-list-item [matMenuTriggerFor]="ReportsMenu">Reports</button>
                 <mat-menu #ReportsMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item *ngFor="let report of reportsArr" [routerLink]="'/Records'" [queryParams]="{reportType: report.type}">{{report.linkName}}</button>
+                    <button mat-menu-item *ngFor="let report of reportsArr" [routerLink]="'/records'" [queryParams]="{reportType: report.type}">{{report.linkName}}</button>
                 </mat-menu>
             </ng-container>
             <ng-container *ngIf="userPersmissions?.uploadFile">
@@ -76,51 +69,35 @@
             <ng-container *ngIf="userPersmissions?.createUser || userPersmissions?.viewListUser">
                 <button mat-list-item [matMenuTriggerFor]="UsersMenu">Users</button>
                 <mat-menu #UsersMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                    <button mat-menu-item (click)="openDialog('createUser')" *ngIf="userPersmissions?.createUser">Create</button>
-                    <button mat-menu-item [routerLink]="'/UsersList'" *ngIf="userPersmissions?.viewListUser">List</button>
+                    <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'user', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createUser">Create</button>
+                    <button mat-menu-item [routerLink]="'/user/list'" *ngIf="userPersmissions?.viewListUser">List</button>
                 </mat-menu>
             </ng-container>
         </mat-action-list>
     </mat-sidenav>
     <mat-sidenav-content role="main">
-        <mat-toolbar color='primary'>
-            <div *ngIf="isLoggedIn">
+        <mat-toolbar color='primary' *ngIf="isLoggedIn">
+            <div>
                 <button mat-icon-button (click)="sidenav.toggle()" *ngIf="isSmallScrn; else menu"><mat-icon>menu</mat-icon></button>
                 <ng-template #menu>
+                    <ng-container  *ngIf="userPersmissions?.createGroup || userPersmissions?.viewListGroup">
+                        <button mat-button [matMenuTriggerFor]="GroupMenu" #grpMenu="matMenuTrigger" (mouseenter)="grpMenu.openMenu()">Group</button>
+                        <mat-menu #GroupMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
+                            <span (mouseleave)="grpMenu.closeMenu()">
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'group', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createGroup">Create</button>
+                                <button mat-menu-item [routerLink]="'/group/list'" *ngIf="userPersmissions?.viewListGroup">List</button>
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'group']}}]" [queryParams]="{ModuleType: MODULE_TYPE.GROUP}" [skipLocationChange]="true" *ngIf="userPersmissions?.createGroup">Upload</button>
+                            </span>
+                        </mat-menu>
+                    </ng-container>
                     <ng-container *ngIf="userPersmissions?.createAccount || userPersmissions?.viewListAccount">
                         <button mat-button [matMenuTriggerFor]="AccountMenu" #accMenuTrigger="matMenuTrigger" (mouseenter)="accMenuTrigger.openMenu()">Account</button>
                         <mat-menu #AccountMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
                             <span (mouseleave)="accMenuTrigger.closeMenu()">
-                                <button mat-menu-item (click)="openDialog('createAccnt')" *ngIf="userPersmissions?.createAccount">Create</button>
-                                <button mat-menu-item [routerLink]="'/AccountsList'" *ngIf="userPersmissions?.viewListAccount">List</button>
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'account', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createAccount">Create</button>
+                                <button mat-menu-item [routerLink]="'/account/list'" *ngIf="userPersmissions?.viewListAccount">List</button>
+                                <button mat-menu-item [routerLink]="'/account/open-balance'" *ngIf="userPersmissions?.viewListAccount">Opening Balance</button>
                                 <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'account']}}]" [queryParams]="{ModuleType: MODULE_TYPE.ACCOUNT}" [skipLocationChange]="true" *ngIf="userPersmissions?.createAccount">Upload</button>
-                            </span>
-                        </mat-menu>
-                    </ng-container>
-                    <ng-container *ngIf="userPersmissions?.createProduct || userPersmissions?.viewListProduct">
-                        <button mat-button [matMenuTriggerFor]="ProductMenu" #productMenuTrigger="matMenuTrigger" (mouseenter)="productMenuTrigger.openMenu()">Product</button>
-                        <mat-menu #ProductMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                            <span (mouseleave)="productMenuTrigger.closeMenu()">
-                                <button mat-menu-item [routerLink]="'/product/list'" *ngIf="userPersmissions?.viewListProduct">List</button>
-                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'product']}}]" [queryParams]="{ModuleType: MODULE_TYPE.PRODUCT}" [skipLocationChange]="true" *ngIf="userPersmissions?.createProduct">Upload</button>
-                            </span>
-                        </mat-menu>
-                    </ng-container>
-                    <ng-container *ngIf="userPersmissions?.createBank || userPersmissions?.viewListBank">
-                        <button mat-button [matMenuTriggerFor]="BankMenu" #bnkMenu="matMenuTrigger" (mouseenter)="bnkMenu.openMenu()">Bank</button>
-                        <mat-menu #BankMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                            <span (mouseleave)="bnkMenu.closeMenu()">
-                                <button mat-menu-item [routerLink]="'/CreateBank'" *ngIf="userPersmissions?.createBank">Create</button>
-                                <button mat-menu-item [routerLink]="'/BanksList'" *ngIf="userPersmissions?.viewListBank">List</button>
-                            </span>
-                        </mat-menu>
-                    </ng-container>
-                    <ng-container *ngIf="userPersmissions?.createVoucher || userPersmissions?.viewListVoucher">
-                        <button mat-button [matMenuTriggerFor]="VoucherMenu" #vouchMenu="matMenuTrigger" (mouseenter)="vouchMenu.openMenu()">Voucher</button>
-                        <mat-menu #VoucherMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                            <span (mouseleave)="vouchMenu.closeMenu()">
-                                <button mat-menu-item (click)="openDialog('createVchr')" *ngIf="userPersmissions?.createVoucher">Create</button>
-                                <button mat-menu-item [routerLink]="'/VouchersList'" *ngIf="userPersmissions?.viewListVoucher">List</button>
                             </span>
                         </mat-menu>
                     </ng-container>
@@ -128,19 +105,18 @@
                         <button mat-button [matMenuTriggerFor]="InventoryMenu" #invMenu="matMenuTrigger" (mouseenter)="invMenu.openMenu()">Inventory</button>
                         <mat-menu #InventoryMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
                             <span (mouseleave)="invMenu.closeMenu()">
-                                <button mat-menu-item (click)="openDialog('createInvntry')" *ngIf="userPersmissions?.createInventory">Create</button>
-                                <button mat-menu-item [routerLink]="'/InventoryList'" *ngIf="userPersmissions?.viewListInventory">List</button>
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'inventory', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createInventory">Create</button>
+                                <button mat-menu-item [routerLink]="'/inventory/list'" *ngIf="userPersmissions?.viewListInventory">List</button>
                                 <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'inventory']}}]" [queryParams]="{ModuleType: MODULE_TYPE.INVENTORY}" [skipLocationChange]="true" *ngIf="userPersmissions?.createInventory">Upload</button>
                             </span>
                         </mat-menu>
                     </ng-container>
-                    <ng-container  *ngIf="userPersmissions?.createGroup || userPersmissions?.viewListGroup">
-                        <button mat-button [matMenuTriggerFor]="GroupMenu" #grpMenu="matMenuTrigger" (mouseenter)="grpMenu.openMenu()">Group</button>
-                        <mat-menu #GroupMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                            <span (mouseleave)="grpMenu.closeMenu()">
-                                <button mat-menu-item (click)="openDialog('createGroup')" *ngIf="userPersmissions?.createGroup">Create</button>
-                                <button mat-menu-item [routerLink]="'/GroupsList'" *ngIf="userPersmissions?.viewListGroup">List</button>
-                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'group']}}]" [queryParams]="{ModuleType: MODULE_TYPE.GROUP}" [skipLocationChange]="true" *ngIf="userPersmissions?.createGroup">Upload</button>
+                    <ng-container *ngIf="userPersmissions?.createBank || userPersmissions?.viewListBank">
+                        <button mat-button [matMenuTriggerFor]="BankMenu" #bnkMenu="matMenuTrigger" (mouseenter)="bnkMenu.openMenu()">Cash/Bank</button>
+                        <mat-menu #BankMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
+                            <span (mouseleave)="bnkMenu.closeMenu()">
+                                <button mat-menu-item [routerLink]="'/bank/create'" *ngIf="userPersmissions?.createBank">Create</button>
+                                <button mat-menu-item [routerLink]="'/bank/list'" *ngIf="userPersmissions?.viewListBank">List</button>
                             </span>
                         </mat-menu>
                     </ng-container>
@@ -148,16 +124,27 @@
                         <button mat-button [matMenuTriggerFor]="GenVchrMenu" #genVochMenu="matMenuTrigger" (mouseenter)="genVochMenu.openMenu()">General Voucher</button>
                         <mat-menu #GenVchrMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
                             <span (mouseleave)="genVochMenu.closeMenu()">
-                                <button mat-menu-item (click)="openDialog('createGenVchr')" *ngIf="userPersmissions?.createGenVoucher">Create</button>
-                                <button mat-menu-item [routerLink]="'/GeneralVouchersList'" *ngIf="userPersmissions?.viewListGenVoucher">List</button>
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'general-voucher', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createGenVoucher">Create</button>
+                                <button mat-menu-item [routerLink]="'/general-voucher/list'" *ngIf="userPersmissions?.viewListGenVoucher">List</button>
+                            </span>
+                        </mat-menu>
+                    </ng-container>
+                    <ng-container *ngIf="true">
+                        <button mat-button [matMenuTriggerFor]="GLMenu" #glMenu="matMenuTrigger" (mouseenter)="glMenu.openMenu()">Reports</button>
+                        <mat-menu #GLMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
+                            <span (mouseleave)="glMenu.closeMenu()">
+                                <button mat-menu-item [routerLink]="'/gl/prepare'" *ngIf="true">Prepare</button>
+                                <button mat-menu-item [routerLink]="'/gl/account'" *ngIf="true">Account Copy</button>
+                                <button mat-menu-item [routerLink]="'/gl/trail-balance'" *ngIf="true">Trail Balance</button>
+                                <button mat-menu-item [routerLink]="'/gl/financials'" *ngIf="true">Financials</button>
                             </span>
                         </mat-menu>
                     </ng-container>
                     <ng-container *ngIf="userPersmissions?.generateReports">
-                        <button mat-button [matMenuTriggerFor]="ReportsMenu" #rptMenu="matMenuTrigger" (mouseenter)="rptMenu.openMenu()">Reports</button>
+                        <button mat-button [matMenuTriggerFor]="ReportsMenu" #rptMenu="matMenuTrigger" (mouseenter)="rptMenu.openMenu()">GST</button>
                         <mat-menu #ReportsMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
                             <span (mouseleave)="rptMenu.closeMenu()">
-                                <button mat-menu-item *ngFor="let report of reportsArr" [routerLink]="'/Records'" [queryParams]="{reportType: report.type}">{{report.linkName}}</button>
+                                <button mat-menu-item *ngFor="let report of reportsArr" [routerLink]="'/gst'" [queryParams]="{reportType: report.type}">{{report.linkName}}</button>
                             </span>
                         </mat-menu>
                     </ng-container>
@@ -173,17 +160,17 @@
                         <button mat-button [matMenuTriggerFor]="UsersMenu" #usrMenu="matMenuTrigger" (mouseenter)="usrMenu.openMenu()">Users</button>
                         <mat-menu #UsersMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
                             <span (mouseleave)="usrMenu.closeMenu()">
-                                <button mat-menu-item (click)="openDialog('createUser')" *ngIf="userPersmissions?.createUser">Create</button>
-                                <button mat-menu-item [routerLink]="'/UsersList'" *ngIf="userPersmissions?.viewListUser">List</button>
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['dialog', 'user', 'create']}}]" [skipLocationChange]="true" *ngIf="userPersmissions?.createUser">Create</button>
+                                <button mat-menu-item [routerLink]="'/user/list'" *ngIf="userPersmissions?.viewListUser">List</button>
                             </span>
                         </mat-menu>
                     </ng-container>
-                    <ng-container *ngIf="true">
-                        <button mat-button [matMenuTriggerFor]="GLMenu" #glMenu="matMenuTrigger" (mouseenter)="glMenu.openMenu()">GL</button>
-                        <mat-menu #GLMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
-                            <span (mouseleave)="glMenu.closeMenu()">
-                                <button mat-menu-item [routerLink]="'/GL/prepare'" *ngIf="true">Prepare</button>
-                                <button mat-menu-item [routerLink]="'/GL/account'" *ngIf="true">Account Copy</button>
+                    <ng-container *ngIf="userPersmissions?.createProduct || userPersmissions?.viewListProduct">
+                        <button mat-button [matMenuTriggerFor]="ProductMenu" #productMenuTrigger="matMenuTrigger" (mouseenter)="productMenuTrigger.openMenu()">Product</button>
+                        <mat-menu #ProductMenu="matMenu" backdropClass="backdrop" overlapTrigger="false">
+                            <span (mouseleave)="productMenuTrigger.closeMenu()">
+                                <button mat-menu-item [routerLink]="'/product/list'" *ngIf="userPersmissions?.viewListProduct">List</button>
+                                <button mat-menu-item [routerLink]="[{outlets: { dialog: ['upload', 'product']}}]" [queryParams]="{ModuleType: MODULE_TYPE.PRODUCT}" [skipLocationChange]="true" *ngIf="userPersmissions?.createProduct">Upload</button>
                             </span>
                         </mat-menu>
                     </ng-container>

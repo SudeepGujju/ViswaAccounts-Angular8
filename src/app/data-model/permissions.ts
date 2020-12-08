@@ -3,10 +3,6 @@ export interface Permissions {
     editAccount: boolean;
     deleteAccount: boolean;
     viewListAccount: boolean;
-    createVoucher: boolean;
-    editVoucher: boolean;
-    deleteVoucher: boolean;
-    viewListVoucher: boolean;
     createInventory: boolean;
     editInventory: boolean;
     deleteInventory: boolean;

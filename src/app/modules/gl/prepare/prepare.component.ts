@@ -1,14 +1,14 @@
-import { Component, OnInit } from "@angular/core";
-import { GlService } from "../gl.service";
+import { Component, OnInit } from '@angular/core';
+import { GlService } from '../gl.service';
 
 @Component({
-  selector: "app-prepare",
-  templateUrl: "./prepare.component.html",
-  styleUrls: ["./prepare.component.scss"],
+  selector: 'app-prepare',
+  templateUrl: './prepare.component.html',
+  styleUrls: ['./prepare.component.scss'],
 })
 export class PrepareComponent implements OnInit {
 
-  public glPrepareStatus: number = 0;
+  public glPrepareStatus = 0;
 
   constructor(private glSrvc: GlService) {}
 

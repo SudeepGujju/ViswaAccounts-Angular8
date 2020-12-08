@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { User } from 'app/data-model';
-import { Product } from 'app/modules/shared/models/product';
+import { User, Product } from 'app/data-model';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, map, startWith, switchMap, tap, filter } from 'rxjs/operators';
 
 import { Breadcrumb } from 'app/modules/breadcrumb/breadcrumb';
 import { AlertService } from 'app/modules/alert';
-import { FacedService } from 'app/modules/shared/services/faced.service';
+import { FacedService } from 'app/services/faced.service';
 
 @Component({
   selector: 'app-purchase',
@@ -18,16 +17,16 @@ import { FacedService } from 'app/modules/shared/services/faced.service';
 export class PurchaseComponent implements OnInit {
 
   public purchaseForm: FormGroup;
-  public currentStage: number = 1;
+  public currentStage = 1;
   private users: User[] = [];
   public filteredOption: Observable<User[]>;
   public filteredProducts: Observable<Product[]>;
   private productNameControl: FormControl;
-  public isLoadingProducts: boolean = false;
+  public isLoadingProducts = false;
   public breadcrumbConfig: Breadcrumb[];
 
   public tableDataSource: BehaviorSubject<AbstractControl[]>;
-  public columnsToDisplay = ['name','quantity','mrp','opts'];
+  public columnsToDisplay = ['name', 'quantity', 'mrp', 'opts'];
   public productIDs: string[] = [];
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private facedSrvc: FacedService, private alertSrvc: AlertService) { }
@@ -39,10 +38,10 @@ export class PurchaseComponent implements OnInit {
     });
 
     this.breadcrumbConfig = [
-      new Breadcrumb('Select Shop','store'),
-      new Breadcrumb('Choose Products','shopping_cart'),
-      new Breadcrumb('Place Order','list_alt'),
-      new Breadcrumb('Order Status','receipt')
+      new Breadcrumb('Select Shop', 'store'),
+      new Breadcrumb('Choose Products', 'shopping_cart'),
+      new Breadcrumb('Place Order', 'list_alt'),
+      new Breadcrumb('Order Status', 'receipt')
     ];
 
     this.purchaseForm = this.fb.group({
@@ -67,24 +66,24 @@ export class PurchaseComponent implements OnInit {
       tap(() => this.isLoadingProducts = true),
       switchMap( (value) => (value ? this.facedSrvc.getUserProductsList(value, this.stockistId.value) : of([]) ).pipe( finalize(() => this.isLoadingProducts = false)) ),
       map( (products) => products )
-    )
+    );
 
     this.tableDataSource = new BehaviorSubject<AbstractControl[]>([]);
   }
 
-  get stockistName(){
+  get stockistName() {
     return this.purchaseForm.get('stockistName') as FormControl;
   }
 
-  get stockistId(){
+  get stockistId() {
     return this.purchaseForm.get('stockistId') as FormControl;
   }
 
-  get productName(){
+  get productName() {
     return this.productNameControl;
   }
 
-  get products(){
+  get products() {
     return this.purchaseForm.get('products') as FormArray;
   }
 
@@ -96,47 +95,62 @@ export class PurchaseComponent implements OnInit {
     );
   }
 
-  validateNStockistID(username){
+  validateNStockistID(username) {
     const user: any = this.users.find( x => x.username.toLowerCase() == username.toLowerCase());
 
-    if(user){
+    if (user) {
       this.stockistId.setValue(user._id);
-    }else{
+    } else {
       this.stockistId.setValue('');
       this.stockistName.setErrors({InvalidShop: true});
     }
 
     this.delteAllProducts();
   }
-  
+
   public displayFn(product: Product): string {
     return product.name;
   }
-  
-  nextStage(){
 
-    switch(this.currentStage){
-      case 1: {this.stockistName.valid ? this.currentStage = this.currentStage + 1 : "" }break;
-      case 2: {this.products.valid ? this.currentStage = this.currentStage + 1 : "" }break;
-      case 3: {this.alertSrvc.showConfirmAlert("Do you want to place order?").afterClosed().subscribe( (confirmation) => { if(confirmation) this.currentStage = this.currentStage + 1;} )}break;
+  nextStage() {
+
+    switch (this.currentStage) {
+      case 1: { 
+                if(this.stockistName.valid) {this.currentStage = this.currentStage + 1};
+              }
+              break;
+      case 2: {
+                if(this.products.valid) {this.currentStage = this.currentStage + 1};
+              }
+              break;
+      case 3: {
+                this.alertSrvc.showConfirmAlert('Do you want to place order?')
+                                .afterClosed()
+                                .subscribe( (confirmation) => { 
+                                  if(confirmation){ 
+                                    this.saveOrder();
+                                  }
+                                }); 
+              }
+              break;
     }
   }
 
-  previousStage(){
+  previousStage() {
     this.currentStage = this.currentStage - 1;
   }
 
-  addProduct(){
+  addProduct() {
 
     const product = this.productName.value;
 
-    if(typeof product != 'object'){
-      this.productName.setErrors({'InvalidProduct': true});
+    if (typeof product != 'object') {
+      this.productName.setErrors({InvalidProduct: true});
       return;
     }
 
-    if(this.productIDs.indexOf(product._id) != -1){
-      this.productName.setErrors({'ProductAlreadyExist': true});
+    if (this.productIDs.indexOf(product._id) != -1) {
+      this.productName.setErrors({ProductAlreadyExist: true});
       return;
     }
 
@@ -151,25 +165,38 @@ export class PurchaseComponent implements OnInit {
     this.productName.setValue('');
   }
 
-  deleteProduct(index){
+  deleteProduct(index) {
     this.products.removeAt(index);
 
     this.tableDataSource.next(this.products.controls);
   }
 
-  getNewProductForm(name: string, id: string){
+  getNewProductForm(name: string, id: string) {
 
     return this.fb.group({
       name: [name, [Validators.required]],
-      Id: [id, [Validators.required]],
+      productId: [id, [Validators.required]],
       quantity: [''],
       mrp: [0, [Validators.required]]
-    })
+    });
   }
 
-  delteAllProducts(){
+  delteAllProducts() {
     this.products.clear();
     this.tableDataSource.next([]);
+  }
+
+  saveOrder() {
+    this.facedSrvc.placeOrder(this.purchaseForm.value).subscribe(
+      (response) => {
+        this.currentStage = this.currentStage + 1;
+        console.log(response);
+      },
+      (error) => {
+        this.currentStage = this.currentStage + 1;
+        console.log(error);
+      }
+    );
   }
 }
 

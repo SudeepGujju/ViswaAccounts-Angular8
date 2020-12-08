@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { Permissions, User } from '../data-model';
 import { userPermUrl, userUrl } from '../urlConfig';
 
@@ -9,10 +9,19 @@ import { userPermUrl, userUrl } from '../urlConfig';
 })
 export class UserService {
 
-  constructor(private http: HttpClient) { }
+  private listUpdateSubject: Subject<boolean> = new Subject();
+  public listUpdate$: Observable<boolean>;
+
+  constructor(private http: HttpClient) { 
+    this.listUpdate$ = this.listUpdateSubject.asObservable();
+  }
+
+  notifyToUpdateList(){
+    this.listUpdateSubject.next(true);
+  }
 
   getList(excludeLoggedInuser: boolean = false): Observable<User[]> {
-    return this.http.get<User[]>(userUrl, {params: {excludeLoggedInuser: excludeLoggedInuser ?'Y':'N'}});
+    return this.http.get<User[]>(userUrl, {params: {excludeLoggedInuser: excludeLoggedInuser ? 'Y' : 'N'}});
   }
 
   get(id: string): Observable<User> {

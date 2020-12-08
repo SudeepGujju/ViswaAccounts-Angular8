@@ -24,15 +24,11 @@ export const accountUrl = Url + '/account';
 export const accountCodeAvailUrl = accountUrl + '/codeAvailable';
 export const accountDropdownUrl = accountUrl + '/dropdown';
 export const accountUploadUrl = accountUrl + '/upload';
+export const accountOpenBalUrl = accountUrl + '/openingBalance';
 
 export const bankUrl = Url + '/' + 'bank';
 export const bankSearchUrl = bankUrl + '/search';
 export const bankNxtRecIDUrl = bankUrl + '/nextRecordID';
-
-export const productUrl = Url + '/product';
-export const productSearchUrl = productUrl + '/search';
-export const productUserSearchUrl = productUrl + '/search/user';
-export const productUploadUrl = productUrl + '/upload';
 
 export const inventoryUrl = Url + '/inventory';
 export const inventorySearchUrl = inventoryUrl + '/search';
@@ -45,3 +41,14 @@ export const fileUploadUrl = Url + '/' + 'file/upload';
 
 export const glPrepareUrl = Url + '/' + 'gl/prepare';
 export const glAccountCopyUrl = Url + '/' + 'gl/accountCopy';
+export const glTrailBalanceUrl = Url + '/' + 'gl/trailBalance';
+export const glTradingUrl = Url + '/' + 'gl/trading';
+export const glProfitNLossUrl = Url + '/' + 'gl/profitnloss';
+export const glBalanceSheetUrl = Url + '/' + 'gl/balanceSheet';
+
+export const productUrl = Url + '/product';
+export const productSearchUrl = productUrl + '/search';
+export const productUserSearchUrl = productUrl + '/search/user';
+export const productUploadUrl = productUrl + '/upload';
+
+export const purchaseUrl = Url + '/order/purchase';
